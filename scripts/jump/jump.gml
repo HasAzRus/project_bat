@@ -11,4 +11,6 @@ function jump(axis)
 	image_xscale = axis;
 	
 	phy_rotation = 10 * axis;
+	
+	last_height += jump_height;
 }

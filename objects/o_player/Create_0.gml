@@ -5,6 +5,8 @@ phy_fixed_rotation = true;
 jump_height = 1;
 jump_distance = 0.5;
 
+last_height = 0;
+
 camera = instance_create_layer(x, y, "Instances", o_camera);
 camera.target = self;
 
