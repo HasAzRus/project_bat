@@ -18,7 +18,7 @@ if(!is_grounded)
 {
 	if(stamina > 0) 
 	{
-		stamina -= 0.3;
+		stamina -= 0.2;
 		
 		if(stamina_state != e_stamina_state.none)
 		{
@@ -32,12 +32,27 @@ if(!is_grounded)
 			stamina_state = e_stamina_state.not_enough;
 		}
 	}
+	
+	if(phy_speed_y > 0)
+	{
+		if(!is_falling)
+		{
+			is_falling = true;
+			
+			last_height = abs(y - last_grounded_y);
+			
+			show_debug_message(last_height);
+		}
+	}
 }
 else
 {
+	is_falling = false;
+	last_grounded_y = y;
+	
 	if(stamina < 100)
 	{
-		stamina += 0.2;
+		stamina += 0.1;
 		
 		if(stamina_state != e_stamina_state.none)
 		{
@@ -52,7 +67,7 @@ else
 		}
 	}
 	
-	if(last_height > 0.8)
+	if(last_height > 15)
 	{
 		repeat(5)
 		{
@@ -62,6 +77,8 @@ else
 			
 			dust = instance_create_layer(x + dx, y + 5 + dy, "Instances", o_dust);
 		}
+		
+		camera_shake(1, 10);
 	}
 	
 	if(last_height != 0)

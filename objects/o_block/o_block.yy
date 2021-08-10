@@ -4,7 +4,10 @@
   "visible": true,
   "spriteMaskId": null,
   "persistent": false,
-  "parentObjectId": null,
+  "parentObjectId": {
+    "name": "o_solid_surface",
+    "path": "objects/o_solid_surface/o_solid_surface.yy",
+  },
   "physicsObject": true,
   "physicsSensor": false,
   "physicsShape": 1,

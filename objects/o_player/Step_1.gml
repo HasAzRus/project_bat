@@ -1,2 +1,2 @@
 /// @description Player Late Update
-is_grounded = place_meeting(x, y + 4, o_block);
+is_grounded = place_meeting(x, y + 5, o_solid_surface);
