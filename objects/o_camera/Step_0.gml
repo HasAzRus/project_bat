@@ -1,5 +1,5 @@
 /// @description Camera Update
-if(target != noone)
+if(target != noone && !target.died)
 {	
 	x = target.x;
 	y = target.y;

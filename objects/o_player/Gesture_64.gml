@@ -65,16 +65,13 @@ else
 	}
 	else
 	{
-		if(distance_to_object(grab_interactive) < interactive_distance)
+		with(grab_interactive)
 		{
-			with(grab_interactive)
-			{
-				event_user(1);
-			}
-		
-			is_grabbing = false;
-			grab_interactive = noone;
+			event_user(1);
 		}
+		
+		is_grabbing = false;
+		grab_interactive = noone;
 	}
 	
 	if(interact_button_clicked == 0)

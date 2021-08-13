@@ -1,7 +1,7 @@
 {
   "spriteId": {
-    "name": "spr_ambient_green_light",
-    "path": "sprites/spr_ambient_green_light/spr_ambient_green_light.yy",
+    "name": "spr_ambient_light",
+    "path": "sprites/spr_ambient_light/spr_ambient_light.yy",
   },
   "solid": false,
   "visible": true,

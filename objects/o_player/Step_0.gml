@@ -18,7 +18,14 @@ if(!is_grounded)
 {
 	if(stamina > 0) 
 	{
-		stamina -= 0.2;
+		if(stamina > 20)
+		{
+			stamina -= 0.2;
+		}
+		else
+		{
+			stamina -= 0.05;
+		}
 		
 		if(stamina_state != e_stamina_state.none)
 		{
@@ -52,7 +59,7 @@ else
 	
 	if(stamina < 100)
 	{
-		stamina += 0.1;
+		stamina += 0.2;
 		
 		if(stamina_state != e_stamina_state.none)
 		{
@@ -84,5 +91,16 @@ else
 	if(last_height != 0)
 	{
 		last_height = 0;
+	}
+}
+
+if(place_meeting(x, y + 5, o_invisible_block))
+{
+	if(!sit_on_the_ground)
+	{
+		sit_on_the_ground = true;
+		
+		var noground_condition = instance_nearest(x, y, o_noground_condition);
+		set_condition_state(e_condition_state.failed, noground_condition);
 	}
 }

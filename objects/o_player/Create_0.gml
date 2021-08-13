@@ -36,9 +36,10 @@ can_interaction = true;
 is_grabbing = false;
 grab_interactive = noone;
 
-interactive_distance = 15;
+interactive_distance = 10;
 
 control_to_player = true;
+died = false;
 
 left_button_clicked = 0;
 right_button_clicked = 0;
@@ -46,5 +47,7 @@ interact_button_clicked = 0;
 
 red_gems = 0;
 gems = 0;
+
+sit_on_the_ground = false;
 
 show_debug_overlay(true);
