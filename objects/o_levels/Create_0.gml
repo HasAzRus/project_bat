@@ -1,6 +1,12 @@
 /// @description Initializing
 global.levels = self;
 
+//Это тестовые уровни, надо поставить две палочки перед lvls
+lvls[0] = r_e0_lvl1;
+lvls[1] = r_e0_lvl2;
+
+//Убери две палочки перед названием того уровня, которую тестируешь
+
 //lvls[0] = r_e1_lvl1;
 //lvls[1] = r_e1_lvl2;
 //lvls[2] = r_e1_lvl3;
