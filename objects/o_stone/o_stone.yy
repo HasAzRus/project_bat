@@ -33,8 +33,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Entities",
-    "path": "folders/Objects/Entities.yy",
+    "name": "Physics",
+    "path": "folders/Objects/For Level Designer/Interactives/Physics.yy",
   },
   "resourceVersion": "1.0",
   "name": "o_stone",

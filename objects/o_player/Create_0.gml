@@ -1,19 +1,18 @@
 /// @description Player Initializing
-globalvar local_player;
-
 global.local_player = self;
 
 phy_fixed_rotation = true;
 
+start_position_x = x;
+start_position_y = y;
+
 jump_height = 1;
 jump_distance = 0.5;
 
-dash_speed = 2;
-dash_using_stamina_amount = 30;
-
 last_height = 0;
+last_fall_y = 0;
 
-last_grounded_y = 0;
+last_height_assigned = false;
 
 camera = instance_create_layer(x, y, "Instances", o_camera);
 camera.target = self;
@@ -49,5 +48,3 @@ red_gems = 0;
 gems = 0;
 
 sit_on_the_ground = false;
-
-show_debug_overlay(true);

@@ -24,12 +24,11 @@
   ],
   "properties": [
     {"varType":0,"value":"0","rangeEnabled":true,"rangeMin":0.0,"rangeMax":1.0,"listItems":[],"multiselect":false,"filters":[],"resourceVersion":"1.0","name":"ambient_lightness","tags":[],"resourceType":"GMObjectProperty",},
-    {"varType":7,"value":"$FF000000","rangeEnabled":false,"rangeMin":0.0,"rangeMax":10.0,"listItems":[],"multiselect":false,"filters":[],"resourceVersion":"1.0","name":"ambient_color","tags":[],"resourceType":"GMObjectProperty",},
   ],
   "overriddenProperties": [],
   "parent": {
     "name": "Controllers",
-    "path": "folders/Objects/Controllers.yy",
+    "path": "folders/Objects/For Level Designer/Controllers.yy",
   },
   "resourceVersion": "1.0",
   "name": "o_light_controller",

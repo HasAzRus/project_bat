@@ -1,7 +1,7 @@
 /// @description Draw End
 surface_set_target(surf);
 
-draw_rectangle_color(0, 0, camera_width, camera_height, ambient_color, ambient_color, ambient_color, ambient_color, false);
+draw_rectangle_color(0, 0, camera_width, camera_height, c_black, c_black, c_black, c_black, false);
 draw_set_alpha(1 - ambient_lightness);
 
 with(o_light)

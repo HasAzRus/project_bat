@@ -31,8 +31,8 @@
   ],
   "overriddenProperties": [],
   "parent": {
-    "name": "Gameplay",
-    "path": "folders/Objects/Gameplay.yy",
+    "name": "Conditions",
+    "path": "folders/Objects/For Level Designer/Conditions.yy",
   },
   "resourceVersion": "1.0",
   "name": "o_time_condition",

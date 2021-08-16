@@ -46,16 +46,14 @@ if(!is_grounded)
 		{
 			is_falling = true;
 			
-			last_height = abs(y - last_grounded_y);
-			
-			show_debug_message(last_height);
+			last_height_assigned = false;
+			last_fall_y = y;
 		}
 	}
 }
 else
 {
 	is_falling = false;
-	last_grounded_y = y;
 	
 	if(stamina < 100)
 	{
@@ -72,6 +70,19 @@ else
 		{	
 			stamina_state = e_stamina_state.full;
 		}
+	}
+	
+	if(!last_height_assigned)
+	{
+		last_height_assigned = true;
+		
+		last_height = abs(y - last_fall_y);
+		show_debug_message(last_height);
+	}
+	
+	if(last_height > 100)
+	{
+		event_user(1);
 	}
 	
 	if(last_height > 15)

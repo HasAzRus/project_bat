@@ -2,5 +2,4 @@
 if(died)
 {
 	phy_active = false;
-	visible = false;
 }

@@ -9,4 +9,10 @@ function restart()
 	{
 		event_user(2);
 	}
+	
+	
+	with(global.game_mode)
+	{
+		run_timer_for_condition(self);
+	}
 }

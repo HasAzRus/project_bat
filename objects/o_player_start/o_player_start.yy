@@ -26,8 +26,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Gameplay",
-    "path": "folders/Objects/Gameplay.yy",
+    "name": "For Level Designer",
+    "path": "folders/Objects/For Level Designer.yy",
   },
   "resourceVersion": "1.0",
   "name": "o_player_start",

@@ -13,5 +13,6 @@ function jump_amount(axis, amount)
 	phy_rotation = 10 * axis;
 	
 	is_falling = false;
-	last_grounded_y = y;
+	
+	fall_danger_amount = 0;
 }

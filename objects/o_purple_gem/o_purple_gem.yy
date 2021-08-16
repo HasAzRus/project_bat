@@ -21,7 +21,7 @@
   "physicsAngularDamping": 0.1,
   "physicsFriction": 0.2,
   "physicsStartAwake": true,
-  "physicsKinematic": false,
+  "physicsKinematic": true,
   "physicsShapePoints": [
     {"x":0.0,"y":0.0,},
     {"x":4.0,"y":0.0,},
@@ -30,13 +30,13 @@
   ],
   "eventList": [
     {"isDnD":false,"eventNum":0,"eventType":4,"collisionObjectId":{"name":"o_player","path":"objects/o_player/o_player.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
-    {"isDnD":false,"eventNum":73,"eventType":8,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
+    {"isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
   ],
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Entities",
-    "path": "folders/Objects/Entities.yy",
+    "name": "For Level Designer",
+    "path": "folders/Objects/For Level Designer.yy",
   },
   "resourceVersion": "1.0",
   "name": "o_purple_gem",

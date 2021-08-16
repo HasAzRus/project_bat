@@ -1,5 +1,5 @@
 /// @description Dust Initializing
-depth = -10000;
+depth = 201;
 alarm[0] = room_speed;
 
 image_speed = 0;

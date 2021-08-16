@@ -29,8 +29,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Entities",
-    "path": "folders/Objects/Entities.yy",
+    "name": "For Level Designer",
+    "path": "folders/Objects/For Level Designer.yy",
   },
   "resourceVersion": "1.0",
   "name": "o_killzone_block",

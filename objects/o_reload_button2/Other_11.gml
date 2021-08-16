@@ -1,2 +1,2 @@
 /// @description Click
-room_restart();
+transition_room_restart();

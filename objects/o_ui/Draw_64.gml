@@ -56,7 +56,7 @@ if(player.control_to_player)
 
 	if(player.can_interaction)
 	{
-		draw_sprite_ext(spr_interact, player.interact_button_clicked, vcamera_width_half_right_center, view_height - 120, 15, 15, 0, c_white, 0.5);
+		draw_sprite_ext(spr_interact, player.interact_button_clicked, vcamera_width_half_right_center + 100, view_height - 120, 15, 15, 0, c_white, 0.5);
 	}
 }
 
@@ -83,3 +83,9 @@ if(game.alarm[0] != -1)
 	
 	draw_text_transformed_color(vcamera_width_half, 80, game.alarm[0] / 60, 0.7, 0.7, 0, time_text_color, time_text_color, time_text_color, time_text_color, 1);
 }
+
+//if(start_black_screen_is_active)
+//{
+//	draw_set_alpha(start_black_screen_alpha);
+//	draw_rectangle_color(0, 0, view_width, view_height, c_black, c_black, c_black, c_black, false);
+//}

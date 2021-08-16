@@ -32,8 +32,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Prototypes",
-    "path": "folders/Objects/Prototypes.yy",
+    "name": "Physics",
+    "path": "folders/Objects/For Level Designer/Interactives/Physics.yy",
   },
   "resourceVersion": "1.0",
   "name": "o_rectangle",

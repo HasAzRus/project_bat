@@ -55,7 +55,7 @@ else
 	{
 		var nearest_interactive = instance_nearest(x, y, o_interactive);
 
-		if(distance_to_object(nearest_interactive) < interactive_distance)
+		if(nearest_interactive != noone && nearest_interactive.selected && distance_to_object(nearest_interactive) < interactive_distance)
 		{
 			with(nearest_interactive)
 			{

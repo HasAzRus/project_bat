@@ -20,3 +20,5 @@ set_ui_element_active_visible(false, game_ui_elements[4]);
 set_ui_element_active_visible(false, game_ui_elements[5]);
 
 set_ui_element_active_visible(false, game_ui_elements[6]);
+
+alarm[0] = room_speed * 2;
