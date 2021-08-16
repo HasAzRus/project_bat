@@ -1,0 +1,47 @@
+{
+  "spriteId": {
+    "name": "spr_box",
+    "path": "sprites/spr_box/spr_box.yy",
+  },
+  "solid": false,
+  "visible": true,
+  "spriteMaskId": null,
+  "persistent": false,
+  "parentObjectId": {
+    "name": "o_box",
+    "path": "objects/o_box/o_box.yy",
+  },
+  "physicsObject": true,
+  "physicsSensor": true,
+  "physicsShape": 1,
+  "physicsGroup": 1,
+  "physicsDensity": 0.0,
+  "physicsRestitution": 0.1,
+  "physicsLinearDamping": 0.1,
+  "physicsAngularDamping": 0.1,
+  "physicsFriction": 0.2,
+  "physicsStartAwake": false,
+  "physicsKinematic": true,
+  "physicsShapePoints": [
+    {"x":0.0,"y":8.0,},
+    {"x":16.0,"y":8.0,},
+    {"x":16.0,"y":16.0,},
+    {"x":0.0,"y":16.0,},
+  ],
+  "eventList": [
+    {"isDnD":false,"eventNum":11,"eventType":7,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
+  ],
+  "properties": [
+    {"varType":0,"value":"5","rangeEnabled":false,"rangeMin":0.0,"rangeMax":10.0,"listItems":[],"multiselect":false,"filters":[],"resourceVersion":"1.0","name":"purple_gems","tags":[],"resourceType":"GMObjectProperty",},
+    {"varType":0,"value":"1","rangeEnabled":false,"rangeMin":0.0,"rangeMax":10.0,"listItems":[],"multiselect":false,"filters":[],"resourceVersion":"1.0","name":"red_gems","tags":[],"resourceType":"GMObjectProperty",},
+  ],
+  "overriddenProperties": [],
+  "parent": {
+    "name": "For Level Designer",
+    "path": "folders/Objects/For Level Designer.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "o_gems_box",
+  "tags": [],
+  "resourceType": "GMObject",
+}

@@ -2,3 +2,5 @@
 event_inherited();
 
 ui_sprite = spr_allgems;
+
+allgems_count = -1;
