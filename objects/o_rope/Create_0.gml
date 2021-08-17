@@ -5,7 +5,7 @@ var last_rope_element = self;
 
 for(var i = 0; i < array_length(rope_elements); i++)
 {
-	rope_element = instance_create_layer(last_rope_element.x, last_rope_element.y + 8, "Instances", o_rope_element);
+	rope_element = instance_create_layer(last_rope_element.x, last_rope_element.y + 8, "Instances", rope_element_object);
 	
 	rope_elements[i] = rope_element;
 	

@@ -38,8 +38,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "For Level Designer",
-    "path": "folders/Objects/For Level Designer.yy",
+    "name": "Entities",
+    "path": "folders/Objects/Entities.yy",
   },
   "resourceVersion": "1.0",
   "name": "o_box",

@@ -30,6 +30,12 @@
   ],
   "properties": [
     {"varType":0,"value":"5","rangeEnabled":false,"rangeMin":0.0,"rangeMax":10.0,"listItems":[],"multiselect":false,"filters":[],"resourceVersion":"1.0","name":"rope_length","tags":[],"resourceType":"GMObjectProperty",},
+    {"varType":5,"value":"o_rope_element","rangeEnabled":false,"rangeMin":0.0,"rangeMax":10.0,"listItems":[],"multiselect":false,"filters":[
+        "GMRoom",
+      ],"resourceVersion":"1.0","name":"rope_element_object","tags":[],"resourceType":"GMObjectProperty",},
+    {"varType":5,"value":"spr_vine","rangeEnabled":false,"rangeMin":0.0,"rangeMax":10.0,"listItems":[],"multiselect":false,"filters":[
+        "GMSprite",
+      ],"resourceVersion":"1.0","name":"rope_element_sprite","tags":[],"resourceType":"GMObjectProperty",},
   ],
   "overriddenProperties": [],
   "parent": {

@@ -1,0 +1,42 @@
+{
+  "spriteId": {
+    "name": "spr_rope",
+    "path": "sprites/spr_rope/spr_rope.yy",
+  },
+  "solid": false,
+  "visible": true,
+  "spriteMaskId": null,
+  "persistent": false,
+  "parentObjectId": {
+    "name": "o_rope_with_object",
+    "path": "objects/o_rope_with_object/o_rope_with_object.yy",
+  },
+  "physicsObject": true,
+  "physicsSensor": false,
+  "physicsShape": 0,
+  "physicsGroup": 1,
+  "physicsDensity": 0.0,
+  "physicsRestitution": 0.1,
+  "physicsLinearDamping": 0.1,
+  "physicsAngularDamping": 0.1,
+  "physicsFriction": 0.2,
+  "physicsStartAwake": true,
+  "physicsKinematic": true,
+  "physicsShapePoints": [
+    {"x":4.0,"y":4.0,},
+    {"x":4.0,"y":4.0,},
+  ],
+  "eventList": [],
+  "properties": [],
+  "overriddenProperties": [
+    {"propertyId":{"name":"rope_object","path":"objects/o_rope_with_object/o_rope_with_object.yy",},"objectId":{"name":"o_rope_with_object","path":"objects/o_rope_with_object/o_rope_with_object.yy",},"value":"o_rope_saw","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
+  ],
+  "parent": {
+    "name": "For Level Designer",
+    "path": "folders/Objects/For Level Designer.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "o_rope_with_saw",
+  "tags": [],
+  "resourceType": "GMObject",
+}

@@ -50,3 +50,6 @@ gems = 0;
 sit_on_the_ground = false;
 
 show_debug_overlay(true);
+
+cheat_code = "";
+god_mode = false;

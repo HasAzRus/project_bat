@@ -77,7 +77,6 @@ else
 		last_height_assigned = true;
 		
 		last_height = abs(y - last_fall_y);
-		show_debug_message(last_height);
 	}
 	
 	if(last_height > 100)
@@ -113,5 +112,28 @@ if(place_meeting(x, y + 5, o_invisible_block))
 		
 		var noground_condition = instance_nearest(x, y, o_noground_condition);
 		set_condition_state(e_condition_state.failed, noground_condition);
+	}
+}
+
+if(global.game_mode.is_pause)
+{
+	if(keyboard_check_pressed(vk_anykey))
+	{
+		if(string_length(keyboard_string) < 10)
+		{
+			show_debug_message(keyboard_string);
+			
+			if(try_cheat(keyboard_string))
+			{
+				show_message("cheat enabled");
+			};
+		}
+	}
+}
+else
+{
+	if(keyboard_string != "")
+	{
+		keyboard_string = "";
 	}
 }

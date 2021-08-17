@@ -18,6 +18,8 @@ if(is_pause)
 	draw_set_halign(fa_middle);
 	draw_set_valign(fa_center);
 	
+	draw_set_color(c_white);
+	
 	draw_text(view_width / 2, view_height / 2, "pause");
 }
 
@@ -49,7 +51,7 @@ if(array_length(game_conditions) != 0)
 
 var player = global.local_player;
 
-if(player.control_to_player)
+if(player.control_to_player && !player.died)
 {
 	draw_sprite_ext(spr_arrow_left, player.left_button_clicked, vcamera_width_half_left_center - vcamera_width_half_left_center / 2, view_height - 120, 15, 15, 0, c_white, 0.5);
 	draw_sprite_ext(spr_arrow_right, player.right_button_clicked, vcamera_width_half_left_center + vcamera_width_half_left_center / 2, view_height - 120, 15, 15, 0, c_white, 0.5);
@@ -79,7 +81,7 @@ if(game.alarm[0] != -1)
 	var normalized_time = (game.alarm[0] / 60) / game.max_timer_seconds;
 	var time_text_color = (normalized_time > 0.5) ? c_white : ((normalized_time > 0.25) ? c_yellow : c_red);
 	
-	show_debug_message("normalized time" + string(normalized_time));
+	//show_debug_message("normalized time" + string(normalized_time));
 	
 	draw_text_transformed_color(vcamera_width_half, 80, game.alarm[0] / 60, 0.7, 0.7, 0, time_text_color, time_text_color, time_text_color, time_text_color, 1);
 }

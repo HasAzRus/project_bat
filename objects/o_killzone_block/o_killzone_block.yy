@@ -7,7 +7,10 @@
   "visible": false,
   "spriteMaskId": null,
   "persistent": false,
-  "parentObjectId": null,
+  "parentObjectId": {
+    "name": "o_killer",
+    "path": "objects/o_killer/o_killer.yy",
+  },
   "physicsObject": true,
   "physicsSensor": true,
   "physicsShape": 1,

@@ -1,5 +1,10 @@
 function try_interact()
 {
+	if(global.game_mode.is_pause)
+	{
+		return;
+	}
+	
 	if(!is_grabbing && can_interaction)
 	{
 		var nearest_interactive = instance_nearest(x, y, o_interactive);
