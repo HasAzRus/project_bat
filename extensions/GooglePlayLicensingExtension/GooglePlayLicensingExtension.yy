@@ -1,5 +1,4 @@
 {
-  "copyToTargets": 8,
   "optionsFile": "options.json",
   "options": [],
   "exportToGame": true,
@@ -17,7 +16,7 @@
   "androidProps": true,
   "installdir": "",
   "files": [
-    {"copyToTargets":8,"filename":"GooglePlayLicensingAsExt.ext","origname":"extensions\\GooglePlayLicensingAsExt.ext","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"order":[],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
+    {"filename":"GooglePlayLicensingAsExt.ext","origname":"extensions\\GooglePlayLicensingAsExt.ext","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":8,"order":[],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
   ],
   "classname": "",
   "tvosclassname": "",
@@ -45,6 +44,7 @@
   "androidPermissions": [
     "com.android.vending.BILLING",
   ],
+  "copyToTargets": 8,
   "iosCocoaPods": "",
   "tvosCocoaPods": "",
   "iosCocoaPodDependencies": "",

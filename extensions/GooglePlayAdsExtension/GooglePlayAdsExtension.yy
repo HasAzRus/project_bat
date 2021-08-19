@@ -1,5 +1,4 @@
 {
-  "copyToTargets": 562949953421324,
   "optionsFile": "options.json",
   "options": [],
   "exportToGame": true,
@@ -17,7 +16,7 @@
   "androidProps": true,
   "installdir": "",
   "files": [
-    {"copyToTargets":562949953421324,"filename":"GoogleMobileAds.ext","origname":"extensions\\admob.ext","init":"","final":"","kind":4,"uncompress":false,"functions":[
+    {"filename":"GoogleMobileAds.ext","origname":"extensions\\admob.ext","init":"","final":"","kind":4,"uncompress":false,"functions":[
         {"externalName":"GoogleMobileAds_Init","kind":11,"help":"GoogleMobileAds_Init( interstitialId, applicationId )","hidden":false,"returnType":2,"argCount":2,"args":[
             1,
             1,
@@ -89,7 +88,7 @@
         {"value":"5","hidden":false,"resourceVersion":"1.0","name":"GoogleMobileAds_Skyscraper","tags":[],"resourceType":"GMExtensionConstant",},
         {"value":"9817","hidden":false,"resourceVersion":"1.0","name":"GoogleMobileAds_ASyncEvent","tags":[],"resourceType":"GMExtensionConstant",},
         {"value":"6","hidden":false,"resourceVersion":"1.0","name":"GoogleMobileAds_Smart_Banner","tags":[],"resourceType":"GMExtensionConstant",},
-      ],"ProxyFiles":[],"order":[
+      ],"ProxyFiles":[],"copyToTargets":562949953421324,"order":[
         {"name":"GoogleMobileAds_Init","path":"extensions/GooglePlayAdsExtension/GooglePlayAdsExtension.yy",},
         {"name":"GoogleMobileAds_ShowInterstitial","path":"extensions/GooglePlayAdsExtension/GooglePlayAdsExtension.yy",},
         {"name":"GoogleMobileAds_LoadInterstitial","path":"extensions/GooglePlayAdsExtension/GooglePlayAdsExtension.yy",},
@@ -147,6 +146,7 @@
   "tvosThirdPartyFrameworkEntries": [],
   "IncludedResources": [],
   "androidPermissions": [],
+  "copyToTargets": 562949953421324,
   "iosCocoaPods": "",
   "tvosCocoaPods": "",
   "iosCocoaPodDependencies": "",
