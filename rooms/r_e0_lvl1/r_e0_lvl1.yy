@@ -81,10 +81,12 @@
         {"properties":[
             {"propertyId":{"name":"receiver_id","path":"objects/o_trigger/o_trigger.yy",},"objectId":{"name":"o_trigger","path":"objects/o_trigger/o_trigger.yy",},"value":"1234","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
             {"propertyId":{"name":"only_once","path":"objects/o_trigger/o_trigger.yy",},"objectId":{"name":"o_trigger","path":"objects/o_trigger/o_trigger.yy",},"value":"True","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
-          ],"isDnd":false,"objectId":{"name":"o_trigger","path":"objects/o_trigger/o_trigger.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":2.0,"scaleY":2.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":16.0,"y":128.0,"resourceVersion":"1.0","name":"inst_491C5A19","tags":[],"resourceType":"GMRInstance",},
+          ],"isDnd":false,"objectId":{"name":"o_trigger","path":"objects/o_trigger/o_trigger.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":2.0,"scaleY":2.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":0.0,"y":80.0,"resourceVersion":"1.0","name":"inst_491C5A19","tags":[],"resourceType":"GMRInstance",},
         {"properties":[
             {"propertyId":{"name":"receiver_id","path":"objects/o_receiver/o_receiver.yy",},"objectId":{"name":"o_receiver","path":"objects/o_receiver/o_receiver.yy",},"value":"1234","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
           ],"isDnd":false,"objectId":{"name":"o_message_receiver","path":"objects/o_message_receiver/o_message_receiver.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":1.0,"scaleY":1.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":-48.0,"y":64.0,"resourceVersion":"1.0","name":"inst_74A85187","tags":[],"resourceType":"GMRInstance",},
+        {"properties":[],"isDnd":false,"objectId":{"name":"o_button","path":"objects/o_button/o_button.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":1.0,"scaleY":1.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":48.0,"y":160.0,"resourceVersion":"1.0","name":"inst_492B806F","tags":[],"resourceType":"GMRInstance",},
+        {"properties":[],"isDnd":false,"objectId":{"name":"o_lever","path":"objects/o_lever/o_lever.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":1.0,"scaleY":1.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":368.0,"y":192.0,"resourceVersion":"1.0","name":"inst_E43B751","tags":[],"resourceType":"GMRInstance",},
       ],"visible":true,"depth":200,"userdefinedDepth":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"gridX":16,"gridY":16,"layers":[],"hierarchyFrozen":false,"resourceVersion":"1.0","name":"Instances","tags":[],"resourceType":"GMRInstanceLayer",},
     {"tilesetId":{"name":"ts_environments_default","path":"tilesets/ts_environments_default/ts_environments_default.yy",},"x":0,"y":0,"tiles":{"SerialiseWidth":29,"SerialiseHeight":13,"TileSerialiseData":[
 2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,2147483648,
@@ -162,6 +164,8 @@
     {"name":"inst_589B8F32","path":"rooms/r_e0_lvl1/r_e0_lvl1.yy",},
     {"name":"inst_491C5A19","path":"rooms/r_e0_lvl1/r_e0_lvl1.yy",},
     {"name":"inst_74A85187","path":"rooms/r_e0_lvl1/r_e0_lvl1.yy",},
+    {"name":"inst_492B806F","path":"rooms/r_e0_lvl1/r_e0_lvl1.yy",},
+    {"name":"inst_E43B751","path":"rooms/r_e0_lvl1/r_e0_lvl1.yy",},
   ],
   "inheritCreationOrder": false,
   "sequenceId": null,

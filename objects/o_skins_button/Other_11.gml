@@ -1,0 +1,1 @@
+transition_room_goto(r_skins_menu);

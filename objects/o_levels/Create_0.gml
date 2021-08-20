@@ -2,6 +2,10 @@
 global.levels = self;
 
 current_level_index = 0;
+current_episode_index = 0;
+
+episodes[0] = r_level_menu;
+//episodes[1] = r_level_menu2;
 
 //Это тестовые уровни, надо поставить две палочки перед lvls
 lvls[0] = r_e0_lvl1;
