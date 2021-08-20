@@ -35,6 +35,12 @@ function try_cheat(cheat_code)
 		
 		return true;
 	}
+	else if(cheat_code == "crtskn")
+	{
+		instance_create_layer(player.x + player.image_xscale * 20, player.y, "Instances", o_skeleton);
+		
+		return true;
+	}
 	
 	return false;
 }

@@ -1,10 +1,9 @@
 {
-  "copyToTargets": 8,
   "optionsFile": "options.json",
   "options": [],
   "exportToGame": true,
   "supportedTargets": 8,
-  "extensionVersion": "3.2.0",
+  "extensionVersion": "3.3.4",
   "packageId": "com.yoyogames.googleplaylicensingextension",
   "productId": "6C049D182ECD002FCA87540902AF4A74",
   "author": "",
@@ -17,7 +16,7 @@
   "androidProps": true,
   "installdir": "",
   "files": [
-    {"copyToTargets":8,"filename":"GooglePlayLicensingAsExt.ext","origname":"extensions\\GooglePlayLicensingAsExt.ext","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"order":[],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
+    {"filename":"GooglePlayLicensingAsExt.ext","origname":"extensions\\GooglePlayLicensingAsExt.ext","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":8,"order":[],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
   ],
   "classname": "",
   "tvosclassname": "",
@@ -45,6 +44,7 @@
   "androidPermissions": [
     "com.android.vending.BILLING",
   ],
+  "copyToTargets": 8,
   "iosCocoaPods": "",
   "tvosCocoaPods": "",
   "iosCocoaPodDependencies": "",

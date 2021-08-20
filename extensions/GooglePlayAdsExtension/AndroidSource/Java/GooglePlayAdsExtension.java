@@ -15,15 +15,25 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.content.DialogInterface;
 import android.util.Log;
+import android.view.Display;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.RequestConfiguration;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import android.content.res.Configuration;
 import android.util.DisplayMetrics;
 
@@ -31,6 +41,7 @@ import com.google.ads.consent.*;
 import java.net.URL;
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Arrays;
 
 import android.content.SharedPreferences;
 import com.google.gson.Gson;
@@ -58,20 +69,19 @@ import android.content.IntentSender.SendIntentException;
 
 
 //Can't extend BaseGameUtils as we already extend RunnerSocial
-public class GooglePlayAdsExtension extends RunnerSocial implements RewardedVideoAdListener 
+public class GooglePlayAdsExtension extends RunnerSocial  implements OnUserEarnedRewardListener
 {
 	
 	public static GooglePlayAdsExtension CurrentGoogleExtension;
 
-	private RewardedVideoAd mRewardedVideoAd;
+	private RewardedAd mRewardedAd=null;
     private AdView adView=null;
 	private InterstitialAd interstitialAd=null;
 	//private String BannerId;
 	private String InterstitialId;
-	private String InterstitialStatus = "Not Ready";
-    private String RewardedVideoStatus = "Not Ready";
-	private String TestDeviceId;
-	private boolean bUseTestAds=false;
+
+
+
 	private AdSize BannerSize;
 	private int BannerXPos;
 	private int BannerYPos;
@@ -124,219 +134,135 @@ public class GooglePlayAdsExtension extends RunnerSocial implements RewardedVide
 	// MOBILE ADS
 	// ==================================================
 	
+	@Override
+	public void onUserEarnedReward( RewardItem rewardItem) {
+		Log.i("yoyo", "onUserEarnedReward");
+		
+		int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
+		RunnerJNILib.DsMapAddString( dsMapIndex, "type", "rewardedvideo_watched" );
+		RunnerJNILib.DsMapAddDouble( dsMapIndex,"id",GoogleMobileAds_ASyncEvent);
+        RunnerJNILib.DsMapAddDouble( dsMapIndex,"amount",rewardItem.getAmount());
+        RunnerJNILib.DsMapAddString( dsMapIndex, "currency", rewardItem.getType() );
+		RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+
+	}
+	
     public void GoogleMobileAds_LoadRewardedVideo(String _unitid)
     {
         final String unitid = _unitid;
-        
-        if(mRewardedVideoAd==null)
-        {
-          
-        }
+       
+		
+      
         RunnerActivity.ViewHandler.post( new Runnable() {
     		public void run() 
     		{
                  
-                if(mRewardedVideoAd==null)
-                {
-                  mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(RunnerActivity.CurrentActivity);
-                  mRewardedVideoAd.setRewardedVideoAdListener(CurrentGoogleExtension);
-                }
-                
                 AdRequest.Builder builder = new AdRequest.Builder();
-                builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
+				AdRequest adRequest = GoogleMobileAds_BuildAdRequestWithConsent(builder);
 				
-                if( bUseTestAds)
-                    builder.addTestDevice(TestDeviceId);
-				
-                AdRequest adRequest = GoogleMobileAds_BuildAdRequestWithConsent(builder);
-                mRewardedVideoAd.loadAd(unitid,adRequest);
-            }
+				RewardedAd.load(RunnerActivity.CurrentActivity, unitid,
+				adRequest,  new RewardedAdLoadCallback() {
+				  @Override
+				  public void onAdLoaded(RewardedAd ad) {
+					mRewardedAd = ad;
+					Log.e("yoyo", "onRewardedAdLoaded");
+					
+					int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
+					RunnerJNILib.DsMapAddString( dsMapIndex, "type", "rewardedvideo_adloaded" );
+					RunnerJNILib.DsMapAddDouble( dsMapIndex,"id",GoogleMobileAds_ASyncEvent);
+					RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+					
+					mRewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+						/** Called when the ad failed to show full screen content. */
+						@Override
+						public void onAdFailedToShowFullScreenContent(AdError adError) {
+							Log.i("yoyo", "onAdFailedToShowFullScreenContent");
+						    int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
+							RunnerJNILib.DsMapAddString( dsMapIndex, "type", "rewardedvideo_showfailed" );
+							RunnerJNILib.DsMapAddDouble( dsMapIndex,"id",GoogleMobileAds_ASyncEvent);
+							RunnerJNILib.DsMapAddDouble( dsMapIndex,"errorcode",adError.getCode());
+							RunnerJNILib.DsMapAddString( dsMapIndex, "errormessage", adError.getMessage() );
+							RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+						}
+
+						/** Called when ad showed the full screen content. */
+						@Override
+						public void onAdShowedFullScreenContent() {
+							Log.i("yoyo", "onAdShowedFullScreenContent");
+							int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
+							RunnerJNILib.DsMapAddString( dsMapIndex, "type", "rewardedvideo_showedfullscreencontent" );
+							RunnerJNILib.DsMapAddDouble( dsMapIndex,"id",GoogleMobileAds_ASyncEvent);
+							RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+						}
+
+						/** Called when full screen content is dismissed. */
+						@Override
+						public void onAdDismissedFullScreenContent() {
+							Log.i("yoyo", "onAdDismissedFullScreenContent");
+						    int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
+							RunnerJNILib.DsMapAddString( dsMapIndex, "type", "rewardedvideo_adclosed" );
+							RunnerJNILib.DsMapAddDouble( dsMapIndex,"id",GoogleMobileAds_ASyncEvent);
+							RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+						}
+					  });
+				  }
+				  @Override
+				  public void onAdFailedToLoad(LoadAdError loadAdError) {
+						Log.e("yoyo", "onRewardedAdFailedToLoad");
+					    int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
+						RunnerJNILib.DsMapAddString( dsMapIndex, "type", "rewardedvideo_loadfailed" );
+						RunnerJNILib.DsMapAddDouble( dsMapIndex,"id",GoogleMobileAds_ASyncEvent);
+						RunnerJNILib.DsMapAddDouble( dsMapIndex,"errorcode",loadAdError.getCode());
+						RunnerJNILib.DsMapAddString( dsMapIndex, "errormessage", loadAdError.getMessage() );
+						RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+				  }
+			});
+			}
         });
     }
     
     public void GoogleMobileAds_ShowRewardedVideo()
     {
-        if(mRewardedVideoAd!=null)
+        if(mRewardedAd!=null)
         {
             RunnerActivity.ViewHandler.post( new Runnable() {
                 public void run() 
                 {
-                   if (mRewardedVideoAd.isLoaded()) 
-                   {
-                        mRewardedVideoAd.show();
-                   } 
-                }
+                    mRewardedAd.show(RunnerActivity.CurrentActivity,CurrentGoogleExtension);
+				}
             });
         }
+		
     }
     
     public String GoogleMobileAds_RewardedVideoStatus()
     {
         
-        if(mRewardedVideoAd!=null)
-		{
-			RunnerActivity.ViewHandler.post( new Runnable() {
-    		public void run() 
-    		{
-                if(mRewardedVideoAd!=null)
-                {
-                    if(mRewardedVideoAd.isLoaded())
-                        RewardedVideoStatus="Ready";
-                    else
-                        RewardedVideoStatus = "Not Ready";
-                }
-			}});
+        if(mRewardedAd!=null)
+		{			
+            return "Ready";
 		}
-
-		return RewardedVideoStatus;
+		return "Not Ready";
     }
    
-    @Override
-    public void onRewarded(RewardItem reward) {
-     //   Toast.makeText(RunnerActivity.CurrentActivity, "onRewarded! currency: " + reward.getType() + "  amount: " +
-       //         reward.getAmount(), Toast.LENGTH_SHORT).show();
-                
-        int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-		RunnerJNILib.DsMapAddString( dsMapIndex, "type", "rewardedvideo_watched" );
-		RunnerJNILib.DsMapAddDouble( dsMapIndex,"id",GoogleMobileAds_ASyncEvent);
-        RunnerJNILib.DsMapAddDouble( dsMapIndex,"amount",reward.getAmount());
-        RunnerJNILib.DsMapAddString( dsMapIndex, "currency", reward.getType() );
-		RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-                
-        // Reward the user.
-    }
-
-    @Override
-    public void onRewardedVideoAdLeftApplication() {
-        //Toast.makeText(RunnerActivity.CurrentActivity, "onRewardedVideoAdLeftApplication",
-          //      Toast.LENGTH_SHORT).show();
-                
-        int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-		RunnerJNILib.DsMapAddString( dsMapIndex, "type", "rewardedvideo_leftapplication" );
-		RunnerJNILib.DsMapAddDouble( dsMapIndex,"id",GoogleMobileAds_ASyncEvent);
-		RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }
-
-    @Override
-    public void onRewardedVideoAdClosed() {
-        //Toast.makeText(RunnerActivity.CurrentActivity, "onRewardedVideoAdClosed", Toast.LENGTH_SHORT).show();
-        int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-		RunnerJNILib.DsMapAddString( dsMapIndex, "type", "rewardedvideo_adclosed" );
-		RunnerJNILib.DsMapAddDouble( dsMapIndex,"id",GoogleMobileAds_ASyncEvent);
-		RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }
-
-    @Override
-    public void onRewardedVideoAdFailedToLoad(int errorCode) {
-        //Toast.makeText(RunnerActivity.CurrentActivity, "onRewardedVideoAdFailedToLoad", Toast.LENGTH_SHORT).show();
-        int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-		RunnerJNILib.DsMapAddString( dsMapIndex, "type", "rewardedvideo_loadfailed" );
-		RunnerJNILib.DsMapAddDouble( dsMapIndex,"id",GoogleMobileAds_ASyncEvent);
-        RunnerJNILib.DsMapAddDouble( dsMapIndex,"errorcode",errorCode);
-		RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-        
-        RunnerActivity.ViewHandler.post( new Runnable() {
-    		public void run() 
-    		{
-                if(mRewardedVideoAd!=null)
-                {
-                    if(mRewardedVideoAd.isLoaded())
-                        RewardedVideoStatus="Ready";
-                    else
-                        RewardedVideoStatus = "Not Ready";
-                }
-			}});
-        
-    }
-
-    @Override
-    public void onRewardedVideoAdLoaded() {
-        //Toast.makeText(RunnerActivity.CurrentActivity, "onRewardedVideoAdLoaded", Toast.LENGTH_SHORT).show();
-        int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-		RunnerJNILib.DsMapAddString( dsMapIndex, "type", "rewardedvideo_adloaded" );
-		RunnerJNILib.DsMapAddDouble( dsMapIndex,"id",GoogleMobileAds_ASyncEvent);
-		RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-        
-        RunnerActivity.ViewHandler.post( new Runnable() {
-    		public void run() 
-    		{
-                if(mRewardedVideoAd!=null)
-                {
-                    if(mRewardedVideoAd.isLoaded())
-                        RewardedVideoStatus="Ready";
-                    else
-                        RewardedVideoStatus = "Not Ready";
-                }
-			}});
-    }
-
-    @Override
-    public void onRewardedVideoAdOpened() {
-     //   Toast.makeText(RunnerActivity.CurrentActivity, "onRewardedVideoAdOpened", Toast.LENGTH_SHORT).show();
-        int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-		RunnerJNILib.DsMapAddString( dsMapIndex, "type", "rewardedvideo_adopened" );
-		RunnerJNILib.DsMapAddDouble( dsMapIndex,"id",GoogleMobileAds_ASyncEvent);
-		RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }
-
-    @Override
-    public void onRewardedVideoStarted() {
-        //Toast.makeText(RunnerActivity.CurrentActivity, "onRewardedVideoStarted", Toast.LENGTH_SHORT).show();
-        int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-		RunnerJNILib.DsMapAddString( dsMapIndex, "type", "rewardedvideo_videostarted" );
-		RunnerJNILib.DsMapAddDouble( dsMapIndex,"id",GoogleMobileAds_ASyncEvent);
-		RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }   
-	
-	@Override
-	public void onRewardedVideoCompleted()
-	{
-		
-	}
-	
-	private AdListener adlistener = new AdListener(){
-		@Override
-		 public void onAdLoaded() {
-			Log.i("yoyo","onAdLoaded called");
-			sendInterstitialLoadedEvent( true );
-            RunnerActivity.ViewHandler.post( new Runnable() {
-    		public void run() 
-    		{
-				if(interstitialAd.isLoaded())
-					InterstitialStatus="Ready";
-				else
-					InterstitialStatus = "Not Ready";
-			}});
-		 }
-
-		@Override
-		public void onAdFailedToLoad(int errorCode) {
-			Log.i("yoyo","onAdFailedToLoad called");
-			sendInterstitialLoadedEvent( false );
-            RunnerActivity.ViewHandler.post( new Runnable() {
-    		public void run() 
-    		{
-				if(interstitialAd.isLoaded())
-					InterstitialStatus="Ready";
-				else
-					InterstitialStatus = "Not Ready";
-			}});
-		}
-		@Override
-		public void onAdClosed()
-		{
-			sendInterstitialClosedEvent();
-		}
-
-	};
-	
-	
 	private static final int EVENT_OTHER_SOCIAL = 70;
 	
-	public void GoogleMobileAds_Init(String _Arg1, String AppId)
+	public void GoogleMobileAds_Init(String _Arg1,String Unused)
 	{
 		InterstitialId = _Arg1;	
-        MobileAds.initialize(RunnerActivity.CurrentActivity, AppId);
+        MobileAds.initialize(RunnerActivity.CurrentActivity,
+		new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+				
+				int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
+				RunnerJNILib.DsMapAddDouble( dsMapIndex,"id",GoogleMobileAds_ASyncEvent);
+				RunnerJNILib.DsMapAddString( dsMapIndex, "type", "mobileads_initialization_complete" );
+				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+				
+            }
+		
+	});
 	}
 	
 	public void GoogleMobileAds_ShowInterstitial()
@@ -348,50 +274,76 @@ public class GooglePlayAdsExtension extends RunnerSocial implements RewardedVide
     		public void run() 
     		{
 				Log.i("yoyo","showinterstitial called");
-				if (interstitialAd.isLoaded()) 
+
 				{
 					RunnerActivity.CurrentActivity.runOnUiThread(new Runnable() {
 						public void run() {
-							interstitialAd.show();
+							interstitialAd.show(RunnerActivity.CurrentActivity);
 						}
 					});
 				} 
-				else
-				{
-					Log.i("yoyo", "Interstitial ad was not ready to be shown.");
-				}
     		}});
 		}
-    	
+		else
+    	{
+			Log.i("yoyo", "Interstitial ad was not ready to be shown.");
+	    }
 	}
-	
-	private void initInterstitial()
-	{
-	
-		interstitialAd = new InterstitialAd(RunnerActivity.CurrentActivity);
-		interstitialAd.setAdUnitId(InterstitialId);
-			
-		interstitialAd.setAdListener(adlistener);
-	}
-	
 	public void GoogleMobileAds_LoadInterstitial()
 	{
 		RunnerActivity.ViewHandler.post( new Runnable() {
     	public void run() 
     	{
-			if(interstitialAd==null)
-				initInterstitial();
+
 				
-			AdRequest.Builder builder = new AdRequest.Builder();
-			builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
-			
-			if( bUseTestAds)
-				builder.addTestDevice(TestDeviceId);
-			
+			AdRequest.Builder builder = new AdRequest.Builder();			
 			AdRequest adRequest = GoogleMobileAds_BuildAdRequestWithConsent(builder);
 
-			// Load the interstitial ad.
-			interstitialAd.loadAd(adRequest);
+
+		  InterstitialAd.load((Context) RunnerActivity.CurrentActivity,InterstitialId, adRequest, new InterstitialAdLoadCallback() {
+		  @Override
+		  public void onAdLoaded( InterstitialAd _interstitialAd) {
+			// The mInterstitialAd reference will be null until
+			// an ad is loaded.
+			interstitialAd = _interstitialAd;
+			Log.i("yoyo", "onAdLoaded");
+			sendInterstitialLoadedEvent(true);
+			
+			
+			interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
+			  @Override
+			  public void onAdDismissedFullScreenContent() {
+				// Called when fullscreen content is dismissed.
+				Log.d("yoyo", "The ad was dismissed.");
+			  }
+
+			  @Override
+			  public void onAdFailedToShowFullScreenContent(AdError adError) {
+				// Called when fullscreen content failed to show.
+				Log.d("yoyo", "The ad failed to show.");
+			  }
+
+			  @Override
+			  public void onAdShowedFullScreenContent() {
+				// Called when fullscreen content is shown.
+				// Make sure to set your reference to null so you don't
+				// show it a second time.
+				interstitialAd = null;
+				Log.d("yoyo", "The ad was shown.");
+				sendInterstitialClosedEvent();
+			  }
+			});
+			
+		  }
+
+		  @Override
+		  public void onAdFailedToLoad( LoadAdError loadAdError) {
+			// Handle the error
+			Log.i("yoyo", loadAdError.getMessage());
+			interstitialAd = null;
+			sendInterstitialLoadedEvent(false);
+		  }
+		});
 		}});
 	}
 	
@@ -406,19 +358,8 @@ public class GooglePlayAdsExtension extends RunnerSocial implements RewardedVide
 		if( _bLoaded)
 		{
 			GoogleMobileAds_MoveBanner(BannerXPos, BannerYPos);
-		
 			RunnerJNILib.DsMapAddDouble( dsMapIndex, "width",  GoogleMobileAds_BannerGetWidth());
 			RunnerJNILib.DsMapAddDouble( dsMapIndex, "height",  GoogleMobileAds_BannerGetHeight());
-			
-			
-			
-
-			//DisplayMetrics displayMetrics = ((Context) RunnerActivity.CurrentActivity).getResources().getDisplayMetrics();
-
-			//float screenHeightInDP = displayMetrics.heightPixels / displayMetrics.density;
-
-		//	Log.i("yoyo","screenHeightInDP=" + screenHeightInDP + " dmhp=" + displayMetrics.heightPixels+" density:"+displayMetrics.density);;
-		
 		}
 		
 		RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
@@ -451,9 +392,9 @@ public class GooglePlayAdsExtension extends RunnerSocial implements RewardedVide
 	@TargetApi(11)
 	void SetLayerType()
 	{
-		int sdkVersion =Build.VERSION.SDK_INT;
-		if (sdkVersion > 10)
-			adView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		// You should get better performance on recent devices with the line below commented-out, as then the default View.LAYER_TYPE_HARDWARE will be used
+		// but if you want to use the software renderer and support very old Android devices, you can uncomment the next line
+		//adView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 	}
 	
     
@@ -479,6 +420,22 @@ public class GooglePlayAdsExtension extends RunnerSocial implements RewardedVide
         });
     }
 	
+	private AdSize getAdaptiveAdSize() 
+	{
+		// Step 2 - Determine the screen width (less decorations) to use for the ad width.
+		Display display = RunnerActivity.CurrentActivity.getWindowManager().getDefaultDisplay();
+		DisplayMetrics outMetrics = new DisplayMetrics();
+		display.getMetrics(outMetrics);
+
+		float widthPixels = outMetrics.widthPixels;
+		float density = outMetrics.density;
+
+		int adWidth = (int) (widthPixels / density);
+
+		// Step 3 - Get adaptive ad size and return for setting on the ad view.
+		return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(RunnerActivity.CurrentActivity, adWidth);
+  }
+	
 	public void GoogleMobileAds_AddBannerAt(String _bannerId, double _sizeType, double _x, double _y)
 	{
 		final String bannerId = _bannerId;
@@ -495,6 +452,7 @@ public class GooglePlayAdsExtension extends RunnerSocial implements RewardedVide
 		case 4: BannerSize = AdSize.LEADERBOARD;break;
 		case 5: BannerSize = AdSize.WIDE_SKYSCRAPER; break;
         case 6: BannerSize = AdSize.SMART_BANNER; break;
+		case 7: BannerSize = getAdaptiveAdSize(); break;
 		default: Log.i("yoyo", "AddBanner illegal banner size type:" + _sizeType); return;
 		}
 		
@@ -517,9 +475,8 @@ public class GooglePlayAdsExtension extends RunnerSocial implements RewardedVide
 			
     		//create new banner
 			adView = new AdView(RunnerActivity.CurrentActivity);
-			//adView.setAdListener(GoogleMobileAdsExt.this);
 			adView.setAdListener( new AdListener() {
-				/** Called when an ad is loaded. */
+				
 			    @Override
 			    public void onAdLoaded() 
 			    {
@@ -528,12 +485,29 @@ public class GooglePlayAdsExtension extends RunnerSocial implements RewardedVide
 			    }
 			    
 			    @Override
-			    public void onAdFailedToLoad(int errorCode)
+			    public void onAdFailedToLoad(LoadAdError errorCode)
 			    {
 			    	Log.i("yoyo", "Banner Ad onAdFailedToLoad");
 			    	sendBannerLoadedEvent(false);
 			    }
-			    
+				@Override
+			    public void onAdOpened()
+			    {
+			    	Log.i("yoyo", "Banner Ad onAdOpened");
+			    	
+			    }
+			    @Override
+			    public void onAdClicked()
+			    {
+			    	Log.i("yoyo", "Banner Ad clicked");
+			    	
+			    }
+				@Override
+			    public void onAdClosed()
+			    {
+			    	Log.i("yoyo", "Banner Ad onAdClosed");
+			    	
+			    }
 			});    
 		
 			SetLayerType();
@@ -544,18 +518,10 @@ public class GooglePlayAdsExtension extends RunnerSocial implements RewardedVide
 			adView.setAdUnitId(bannerId);
 			
 			if(vg != null)
-			{
-                
-            
-                
+			{                
 				vg.addView((View)adView);
 			
 				AdRequest.Builder builder = new AdRequest.Builder();
-				builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
-				
-				if( bUseTestAds)
-					builder.addTestDevice(TestDeviceId);
-				
 				AdRequest adRequest = GoogleMobileAds_BuildAdRequestWithConsent(builder);
 
 				// Start loading the ad in the background.
@@ -649,25 +615,25 @@ public class GooglePlayAdsExtension extends RunnerSocial implements RewardedVide
 	
 	public void GoogleMobileAds_UseTestAds( double _useTest, String _deviceId )
 	{
-		bUseTestAds = (_useTest >=0.5);
-		TestDeviceId = _deviceId;
+		boolean bUseTestAds = (_useTest >=0.5);
+		
+		if(bUseTestAds)
+		{
+			List<String> testDeviceIds = Arrays.asList(_deviceId);
+			RequestConfiguration configuration =
+					new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
+			MobileAds.setRequestConfiguration(configuration);
+		}
 	}
 	
 	public String GoogleMobileAds_InterstitialStatus()
 	{
 		if(interstitialAd!=null)
 		{
-			RunnerActivity.ViewHandler.post( new Runnable() {
-    		public void run() 
-    		{
-				if(interstitialAd.isLoaded())
-					InterstitialStatus="Ready";
-				else
-					InterstitialStatus = "Not Ready";
-			}});
+			return "Ready";
 		}
 
-		return InterstitialStatus;
+		return "Not Ready";
 	}
 	
 	// ==================================================
@@ -737,7 +703,7 @@ public class GooglePlayAdsExtension extends RunnerSocial implements RewardedVide
 	}
 	
 	// Queries current consent state for the given ad provider
-	public void GoogleMobileAds_ConsentUpdate(final String publisherIds, final String privacyPolicy, final double personalisedAds, final double noPersonalisedAds, final double adFree)
+	public void GoogleMobileAds_ConsentUpdate(final String publisherIds, final String privacyPolicy, final double personalisedAds, final double noPersonalisedAds, final double adFree, final double showDialog)
 	{
 		ConsentInformation.getInstance(RunnerJNILib.ms_context).setDebugGeography(DebugGeography.DEBUG_GEOGRAPHY_EEA);
 		
@@ -750,10 +716,13 @@ public class GooglePlayAdsExtension extends RunnerSocial implements RewardedVide
             @Override
             public void onConsentInfoUpdated(ConsentStatus consentStatus) 
 			{
-				// If we haven't given consent, show the form
+					// If we haven't given consent, show the form
 				if(consentStatus == ConsentStatus.UNKNOWN)
 				{
-					GoogleMobileAds_ConsentFormShow(privacyPolicy, personalisedAds, noPersonalisedAds, adFree);
+					if(showDialog>0.0)
+						GoogleMobileAds_ConsentFormShow(privacyPolicy, personalisedAds, noPersonalisedAds, adFree);
+					else
+						GoogleMobileAds_ConsentReportStatus(consentStatus, -1, null);
 				}
 				else
 				{
@@ -827,6 +796,8 @@ public class GooglePlayAdsExtension extends RunnerSocial implements RewardedVide
 			RunnerJNILib.DsMapAddString(dsMapIndex, "error", error);
 		}
 		
+		RunnerJNILib.DsMapAddDouble(dsMapIndex,"inEEA",ConsentInformation.getInstance(RunnerJNILib.ms_context).isRequestLocationInEeaOrUnknown()?1.0:0.0);
+		
 		RunnerJNILib.DsMapAddString(dsMapIndex, "type", "consent_status" );
 		RunnerJNILib.DsMapAddDouble(dsMapIndex, "id", GoogleMobileAds_ASyncEvent);
 		
@@ -839,14 +810,14 @@ public class GooglePlayAdsExtension extends RunnerSocial implements RewardedVide
 		ConsentInformation.getInstance(RunnerJNILib.ms_context).setTagForUnderAgeOfConsent(isUnderAge != 0 ? true : false);
 	}
 	
-	public boolean GoogleMobileAds_ConsentIsUserUnderAge()
+	public double GoogleMobileAds_ConsentIsUserUnderAge()
 	{
-		return ConsentInformation.getInstance(RunnerJNILib.ms_context).isTaggedForUnderAgeOfConsent();
+		return ConsentInformation.getInstance(RunnerJNILib.ms_context).isTaggedForUnderAgeOfConsent()?1.0:0.0;
 	}
 	
-	public boolean GoogleMobileAds_ConsentIsUserInEEA()
+	public double GoogleMobileAds_ConsentIsUserInEEA()
 	{
-		return ConsentInformation.getInstance(RunnerJNILib.ms_context).isRequestLocationInEeaOrUnknown();
+		return ConsentInformation.getInstance(RunnerJNILib.ms_context).isRequestLocationInEeaOrUnknown()?1.0:0.0;
 	}
 	
 	public void GoogleMobileAds_ConsentDebugAddDevice(String id)

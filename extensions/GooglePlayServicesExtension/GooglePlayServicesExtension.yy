@@ -1,10 +1,9 @@
 {
-  "copyToTargets": 562949953421320,
   "optionsFile": "options.json",
   "options": [],
   "exportToGame": true,
   "supportedTargets": 562949953421320,
-  "extensionVersion": "3.2.0",
+  "extensionVersion": "3.3.4",
   "packageId": "com.yoyogames.googleplayservicesextension",
   "productId": "",
   "author": "",
@@ -17,7 +16,7 @@
   "androidProps": true,
   "installdir": "",
   "files": [
-    {"copyToTargets":562949953421320,"filename":"GooglePlayServicesExtension.ext","origname":"extensions\\GooglePlayServicesExtension.ext","init":"","final":"","kind":4,"uncompress":false,"functions":[
+    {"filename":"GooglePlayServicesExtension.ext","origname":"extensions\\GooglePlayServicesExtension.ext","init":"","final":"","kind":4,"uncompress":false,"functions":[
         {"externalName":"GooglePlayServices_Status","kind":11,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"resourceVersion":"1.0","name":"GooglePlayServices_Status","tags":[],"resourceType":"GMExtensionFunction",},
         {"externalName":"GooglePlayServices_Init","kind":11,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[],"resourceVersion":"1.0","name":"GooglePlayServices_Init","tags":[],"resourceType":"GMExtensionFunction",},
         {"externalName":"onRevealAchievement","kind":4,"help":"GooglePlayServices_AchievementReveal(achievement_id)","hidden":false,"returnType":2,"argCount":0,"args":[
@@ -34,7 +33,7 @@
         {"value":"9819","hidden":false,"resourceVersion":"1.0","name":"GooglePlayServices_EVENT_ID_POST_ACHIEVEMENT","tags":[],"resourceType":"GMExtensionConstant",},
         {"value":"9821","hidden":false,"resourceVersion":"1.0","name":"GooglePlayServices_EVENT_ID_REVEAL_ACHIEVEMENT","tags":[],"resourceType":"GMExtensionConstant",},
         {"value":"9820","hidden":false,"resourceVersion":"1.0","name":"GooglePlayServices_EVENT_ID_INCREMENT_ACHIEVEMENT","tags":[],"resourceType":"GMExtensionConstant",},
-      ],"ProxyFiles":[],"order":[
+      ],"ProxyFiles":[],"copyToTargets":562949953421320,"order":[
         {"name":"GooglePlayServices_Status","path":"extensions/GooglePlayServicesExtension/GooglePlayServicesExtension.yy",},
         {"name":"GooglePlayServices_Init","path":"extensions/GooglePlayServicesExtension/GooglePlayServicesExtension.yy",},
         {"name":"GooglePlayServices_AchievementReveal","path":"extensions/GooglePlayServicesExtension/GooglePlayServicesExtension.yy",},
@@ -64,6 +63,7 @@
   "tvosThirdPartyFrameworkEntries": [],
   "IncludedResources": [],
   "androidPermissions": [],
+  "copyToTargets": 562949953421320,
   "iosCocoaPods": "",
   "tvosCocoaPods": "",
   "iosCocoaPodDependencies": "",

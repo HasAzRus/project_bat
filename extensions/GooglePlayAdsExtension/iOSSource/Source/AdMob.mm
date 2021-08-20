@@ -32,6 +32,7 @@ int m_BannerYPos;
 
 - (void) GoogleMobileAds_Init:(char *)_intId Arg2:(char *)_ApplicationId
 {
+	//Application id is picked up from the plist but we'll leave this here for compatibility with the Android version
 	g_IntAdId  = [NSString stringWithCString:_intId encoding:NSUTF8StringEncoding];
 	[g_IntAdId retain];
 	//g_AdId = [NSString stringWithCString:IntID encoding:NSUTF8StringEncoding];
@@ -39,8 +40,9 @@ int m_BannerYPos;
 	
 	g_InterstitialReady = false;
     
-    NSString *appid = [NSString stringWithCString:_ApplicationId encoding:NSUTF8StringEncoding];
-    [GADMobileAds configureWithApplicationID:appid];
+    [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
+	
+	//GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @[ @"7841b279355c483c3d6af89089fd33c0" ]; //Swap to your device Id as required (this will be printed in the XCode console when you run on device)
 }
 
 
@@ -59,6 +61,19 @@ int m_BannerYPos;
 	case 4: bannerSize = kGADAdSizeLeaderboard; break;
 	case 5: bannerSize = kGADAdSizeSkyscraper; break;
     case 6: bannerSize = kGADAdSizeSmartBannerPortrait; break;
+	case 7: 
+	{
+		 CGRect frame = g_glView.frame;
+		// Here safe area is taken into account, hence the view frame is used after
+		// the view has been laid out.
+		if (@available(iOS 11.0, *)) {
+			frame = UIEdgeInsetsInsetRect(g_glView.frame, g_glView.safeAreaInsets);
+		}
+		CGFloat viewWidth = frame.size.width;
+		bannerSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(viewWidth);
+
+	}
+	break;
 	default: NSLog(@"AddBanner illegal banner size type %d", type); return;
 	}
 	
@@ -72,7 +87,7 @@ int m_BannerYPos;
 		bannerView = nil;
 	}
 	
-	//bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+
 	bannerView = [[GADBannerView alloc] initWithAdSize:bannerSize];
 	bannerView.adUnitID = [NSString stringWithUTF8String:_bannerId];
 	bannerView.rootViewController = g_controller;
@@ -80,12 +95,7 @@ int m_BannerYPos;
 	[g_glView addSubview:bannerView];
 	[self GoogleMobileAds_MoveBanner:_x Arg2:_y ];
 	
-	GADRequest *request = [GADRequest request];
-	if( m_bUseTestAds )
-	{
-		request.testDevices = [NSArray arrayWithObject:m_DeviceId];
-	}
-	
+	GADRequest *request = [GADRequest request];	
 	[self GoogleMobileAds_ConsentUpdateAdRequest:request];
 	[bannerView loadRequest:request];
 }
@@ -182,20 +192,38 @@ int m_BannerYPos;
 	GADRequest *request = [GADRequest request];
 	if( m_bUseTestAds )
 	{
-		request.testDevices = [NSArray arrayWithObject:m_DeviceId];
+	//	request.testDevices = [NSArray arrayWithObject:m_DeviceId];
 	}
 	
 	[self GoogleMobileAds_ConsentUpdateAdRequest:request];
 	
 	//must create a new interstitial object each time
-	[interstitial release];
+	if(interstitial != nil)
+		[interstitial release];
+	interstitial = nil;
 //	interstitial = [[GADInterstitial alloc] init];
 
 	//interstitial.adUnitID = g_IntAdId;
-	interstitial = [[GADInterstitial alloc] initWithAdUnitID:g_IntAdId];
+	//interstitial = [[GADInterstitial alloc] initWithAdUnitID:g_IntAdId];
+	
+	[GADInterstitialAd loadWithAdUnitID:g_IntAdId
+                              request:request
+                    completionHandler:^(GADInterstitialAd *ad, NSError *error) {
+    if (error) {
+      NSLog(@"Failed to load interstitial ad with error: %@", [error localizedDescription]);
+	  [self sendInterstitialLoadedEvent:0];
+      return;
+    }
+    interstitial = ad;
+	[interstitial retain];
+    interstitial.fullScreenContentDelegate = self;
+	g_InterstitialReady = true;
+	[self sendInterstitialLoadedEvent:1];
+  }];
+	
 
-	interstitial.delegate = self;
-	[interstitial loadRequest:request];
+	
+//	[interstitial loadRequest:request];
 	g_InterstitialReady = false;
 }
 
@@ -207,19 +235,16 @@ int m_BannerYPos;
 		return @"Not Ready";
 }
 
--(NSString *)GoogleMobileAds_RewardedVideoStatus
-{
-	if ([[GADRewardBasedVideoAd sharedInstance] isReady]) 
-		return @"Ready";
-	else
-		return @"Not Ready";
-}
+
 
 
 -(void)GoogleMobileAds_ShowInterstitial
 {
-	[interstitial presentFromRootViewController:g_controller];
-	g_InterstitialReady = false;	//must reload to display again
+	if(interstitial!=nil)
+	{	
+		[interstitial presentFromRootViewController:g_controller];
+		g_InterstitialReady = false;	//must reload to display again
+	}
 }
 
 -(void)sendBannerLoadedEvent:(int)_loaded
@@ -281,76 +306,107 @@ int m_BannerYPos;
 	[self sendBannerLoadedEvent:1];
 }
 
-- (void)adView:(GADBannerView *)_bannerView didFailToReceiveAdWithError:(GADRequestError *)_error
-{
-	NSLog(@"banner ad failed to receive");
-	[self sendBannerLoadedEvent:0];
+
+- (void)adDidPresentFullScreenContent:(id)ad {
+  NSLog(@"Ad did present full screen content.");
 }
 
-- (void)interstitialDidReceiveAd:(GADInterstitial *)ad
-{
-	NSLog(@"interstitialDidReceiveAd");
-	g_InterstitialReady = true;
-	[self sendInterstitialLoadedEvent:1];
-}
-- (void)interstitial:(GADInterstitial *)ad didFailToReceiveAdWithError:(GADRequestError *)error
-{
-	NSLog(@"Interstitial Ad failed to receive: %@",error);
-	[self sendInterstitialLoadedEvent:0];
+- (void)ad:(id)ad didFailToPresentFullScreenContentWithError:(NSError *)error {
+  NSLog(@"Ad failed to present full screen content with error %@.", [error localizedDescription]);
 }
 
-- (void)interstitialWillPresentScreen:(GADInterstitial *)ad
-{
-	NSLog(@"Interstitial will present screen");
+- (void)adDidDismissFullScreenContent:(id)ad {
+  NSLog(@"Ad did dismiss full screen content.");
 }
 
-// Sent before the interstitial is to be animated off the screen.
-- (void)interstitialWillDismissScreen:(GADInterstitial *)ad
+-(NSString *)GoogleMobileAds_RewardedVideoStatus
 {
-	NSLog(@"Interstitial will dismiss screen");
+	if(rewardedAd!=nil)
+		if([rewardedAd canPresentFromRootViewController:g_controller error:nil])
+			return @"Ready";
+	
+	return @"Not Ready";
 }
-
-// Sent just after dismissing an interstitial and it has animated off the
-// screen.
-- (void)interstitialDidDismissScreen:(GADInterstitial *)ad
-{
-	NSLog(@"Interstitial did dismiss screen");
-	[self sendInterstitialClosedEvent];
-}
-
-// Sent just before the application will background or terminate because the
-// user clicked on an ad that will launch another application (such as the App
-// Store).  The normal UIApplicationDelegate methods, like
-// applicationDidEnterBackground:, will be called immediately before this.
-- (void)interstitialWillLeaveApplication:(GADInterstitial *)ad
-{
-	NSLog(@"Interstitial will leave app");
-}
-
 
 -(void)GoogleMobileAds_LoadRewardedVideo:(char*)appUnitId
 {
-    [GADRewardBasedVideoAd sharedInstance].delegate = self;
+    
     NSString *adid = [NSString stringWithCString:appUnitId encoding:NSUTF8StringEncoding];
     
-    
-    GADRequest *request = [GADRequest request];
-	if( m_bUseTestAds )
-	{
-		request.testDevices = [NSArray arrayWithObject:m_DeviceId];
-	}
-	
-	[self GoogleMobileAds_ConsentUpdateAdRequest:request];
-    [[GADRewardBasedVideoAd sharedInstance] loadRequest:request withAdUnitID:adid];
-}
--(void)GoogleMobileAds_ShowRewardedVideo
-{
-    if ([[GADRewardBasedVideoAd sharedInstance] isReady]) 
-    {
-      [[GADRewardBasedVideoAd sharedInstance] presentFromRootViewController:g_controller];
-    }
+
+	 GADRequest *request = [GADRequest request];
+	 [self GoogleMobileAds_ConsentUpdateAdRequest:request];
+  [GADRewardedAd
+       loadWithAdUnitID:adid
+                request:request
+      completionHandler:^(GADRewardedAd *ad, NSError *error) {
+        if (error) {
+          NSLog(@"Rewarded ad failed to load with error: %@", [error localizedDescription]);
+          return;
+        }
+		
+		if(rewardedAd!=nil)
+			[rewardedAd release];
+			
+        rewardedAd = ad;
+		[rewardedAd retain];
+		rewardedAd.fullScreenContentDelegate = self;
+        NSLog(@"Rewarded ad loaded.");
+		  	int dsMapIndex = CreateDsMap(2,
+					"type", 0.0, "rewardedvideo_adloaded",
+                    "id", (double)GoogleMobileAds_ASyncEvent,(void*)NULL
+					 );
+				CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+      }];
 }
 
+
+
+
+-(void)GoogleMobileAds_ShowRewardedVideo
+{
+
+	
+	if (rewardedAd) {
+    [rewardedAd presentFromRootViewController:g_controller
+                                  userDidEarnRewardHandler:^{
+                                  GADAdReward *reward =
+                                      rewardedAd.adReward;
+									  
+                                  // TODO: Reward the user!
+								  
+								  NSString *rewardMessage =
+      [NSString stringWithFormat:@"Reward received with currency %@ , amount %lf",
+          reward.type,
+          [reward.amount doubleValue]];
+  NSLog(@"%@",rewardMessage);
+  
+  
+								int dsMapIndex = CreateDsMap(4,
+					"type", 0.0, "rewardedvideo_watched",
+                    "id", (double)GoogleMobileAds_ASyncEvent,(void*)NULL,
+                    "currency",0.0,[reward.type UTF8String],
+                    "amount",[reward.amount doubleValue],(void*)NULL
+					 );
+
+	//send async event 
+	CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+                                }];
+								
+  } else {
+	
+     int dsMapIndex = CreateDsMap(2,
+				"type", 0.0, "rewardedvideo_loadfailed",
+                "id", (double)GoogleMobileAds_ASyncEvent,(void*)NULL,
+                "error","0.0",@"Ad wasn't ready"
+                    
+					 );
+    CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+    NSLog(@"Ad wasn't ready");
+  }
+	
+}
+/*
 - (void)rewardBasedVideoAd:(GADRewardBasedVideoAd *)rewardBasedVideoAd
     didRewardUserWithReward:(GADAdReward *)reward {
   NSString *rewardMessage =
@@ -436,7 +492,7 @@ int m_BannerYPos;
 					 );
     CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
 }
-
+*/
 /////////////
 // CONSENT
 ////////////
@@ -457,6 +513,7 @@ int m_BannerYPos;
 				 withPersonalisedAds:(double)_personalisedAds
 			   withNoPersonalisedAds:(double)_noPersonalisedAds
 						  withAdFree:(double)_adFree
+					   displayDialog:(double)_displayDialog
 {
 	// Set up privacy policy as a string
 	NSString* privacyPolicyNS = [NSString stringWithUTF8String:_privacyPolicy];
@@ -481,11 +538,20 @@ int m_BannerYPos;
 		{
 			if (PACConsentInformation.sharedInstance.consentStatus == PACConsentStatusUnknown)
 			{
-				// Consent status is unknown - show the consent form
-				[self GoogleMobileAds_ConsentFormShow: privacyPolicyNS
-								  withPersonalisedAds:_personalisedAds
-								withNoPersonalisedAds:_noPersonalisedAds
-										   withAdFree:_adFree];
+				if(_displayDialog)
+				{
+					// Consent status is unknown - show the consent form
+					[self GoogleMobileAds_ConsentFormShow: privacyPolicyNS
+									  withPersonalisedAds:_personalisedAds
+									withNoPersonalisedAds:_noPersonalisedAds
+											   withAdFree:_adFree];
+				}
+				else
+				{
+					[self GoogleMobileAds_ConsentReportStatus:PACConsentInformation.sharedInstance.consentStatus
+										 withPreferAdFree:-1
+												withError:NULL]; 
+				}
 			}
 			else
 			{

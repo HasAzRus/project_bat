@@ -1,10 +1,9 @@
 {
-  "copyToTargets": 8,
   "optionsFile": "options.json",
   "options": [],
   "exportToGame": true,
   "supportedTargets": 8,
-  "extensionVersion": "3.2.0",
+  "extensionVersion": "3.3.4",
   "packageId": "com.yoyogames.googleplayapkexpansion",
   "productId": "",
   "author": "",
@@ -17,7 +16,7 @@
   "androidProps": true,
   "installdir": "",
   "files": [
-    {"copyToTargets":2097160,"filename":"PlayAPKExpansionExtension.ext","origname":"extensions\\PlayAPKExpansionExtension.ext","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"order":[],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
+    {"filename":"PlayAPKExpansionExtension.ext","origname":"extensions\\PlayAPKExpansionExtension.ext","init":"","final":"","kind":4,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":2097160,"order":[],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
   ],
   "classname": "",
   "tvosclassname": "",
@@ -51,6 +50,7 @@
     "android.permission.READ_EXTERNAL_STORAGE",
     "android.permission.FOREGROUND_SERVICE",
   ],
+  "copyToTargets": 8,
   "iosCocoaPods": "",
   "tvosCocoaPods": "",
   "iosCocoaPodDependencies": "",

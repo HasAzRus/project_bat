@@ -90,16 +90,16 @@ public class GooglePlayServicesExtension extends RunnerSocial
 	}
 	
 	private GoogleSignInClient mGoogleSigninClient = null;
-    	private GoogleSignInAccount mGoogleSignInAccount = null;
+    private GoogleSignInAccount mGoogleSignInAccount = null;
 	private int LastGSId=-1;
 	private String mCurrentSaveName = "DefaultSave";
 	private byte [] mSaveGameData = null;
 	private RunnerBillingInterface iap_controller=null;
 	
-    	// Unique tag for the error dialog fragment
-    	private static final String DIALOG_ERROR = "dialog_error";
+    // Unique tag for the error dialog fragment
+    private static final String DIALOG_ERROR = "dialog_error";
 	
-    	// Bool to track whether the app is already resolving an error
+    // Bool to track whether the app is already resolving an error
 	private boolean mResolvingConnectionFailure = false;
 	private boolean mAutoStartSignInFlow = true;
 	private boolean mSignInClicked = false;
@@ -120,7 +120,7 @@ public class GooglePlayServicesExtension extends RunnerSocial
 	private static final int RC_SIGN_IN = 9001;
 	
 	// Request code to use when launching the resolution activity
-    	private static final int REQUEST_RESOLVE_ERROR = 1001;
+    private static final int REQUEST_RESOLVE_ERROR = 1001;
 	
 	public void GooglePlayServices_Init()
 	{
@@ -140,7 +140,7 @@ public class GooglePlayServicesExtension extends RunnerSocial
 			Log.i("yoyo", "Initialising Google Play Services. App id: " + appid);
 
 		// Initialise sign-in client
-		GoogleSignInOptions.Builder optionsBuilder = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN);
+		GoogleSignInOptions.Builder optionsBuilder = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
 		optionsBuilder.requestScopes(Games.SCOPE_GAMES);
 		optionsBuilder.requestProfile();
 		optionsBuilder.requestId();
@@ -310,29 +310,6 @@ public class GooglePlayServicesExtension extends RunnerSocial
 			
 			try
 			{
-				/*		
-				Class c = Class.forName(FullClassName);
-				if(c==null)
-				{
-					Log.i("yoyo","Unable to find class");
-				}
-				else
-				{
-					Method[] methods = c.getMethods();
-					for (int i = 0; i < methods.length; i++) {
-						Log.i("yoyo","public method: " + methods[i]);
-					}
-					
-					  
-					Constructor[] allConstructors = c.getDeclaredConstructors();
-					for (Constructor ctor : allConstructors) {
-						
-						Log.i("yoyo","constuctor:" + ctor);
-						
-					}
-				}
-				*/
-				
 				iap_controller = (RunnerBillingInterface)(Class.forName(FullClassName).getConstructor().newInstance());
 				
 				Log.i("yoyo","Created iap_controller, about to call InitRunnerBilling");
@@ -385,7 +362,7 @@ public class GooglePlayServicesExtension extends RunnerSocial
 			return;
 		}
 		
-		Log.i("yoyo","Signing in..");
+		Log.i("yoyo","Signing-in to Google Play Services..");
 		
 		Task<GoogleSignInAccount> task = mGoogleSigninClient.silentSignIn();
 		mSignInClicked = true;
@@ -413,17 +390,15 @@ public class GooglePlayServicesExtension extends RunnerSocial
 	{
 		if(task.isSuccessful())
 		{
-			Log.i("yoyo", "Silent sign in successful");
+			Log.i("yoyo", "Silent sign-in successful");
 			mSignInClicked = false;
-			
 			mGoogleSignInAccount = task.getResult();
 			onLoginSuccess(mGoogleSignInAccount);
 		}
 		else
 		{
-			Log.i("yoyo", "Silent sign in failed, attempting normal sign in.. Current Status "+GooglePlayServices_Status());
+			Log.i("yoyo", "Silent sign-in failed, attempting normal sign-in. Current Status "+GooglePlayServices_Status());
 			
-			// No luck signing in silently, trigger normal sign in flow
 			Intent signInIntent = mGoogleSigninClient.getSignInIntent();
 			RunnerActivity.CurrentActivity.startActivityForResult(signInIntent, RC_SIGN_IN);
 		}
@@ -435,29 +410,54 @@ public class GooglePlayServicesExtension extends RunnerSocial
 		GamesClient gamesClient = Games.getGamesClient(RunnerActivity.CurrentActivity, account);
 		gamesClient.setViewForPopups(RunnerActivity.CurrentActivity.getWindow().getDecorView());
 		
-		// Notify runner
-		String displayName = account.getDisplayName();
-		String id = account.getId();
-			
-		if (displayName == null) 
-			displayName = "Anonymous";
-		if (id == null) 
-			id = "-1";
+		// Get the current player name and ID
+		PlayersClient playerClient = Games.getPlayersClient(RunnerActivity.CurrentActivity, account);
+		Task<Player> task = playerClient.getCurrentPlayer();
 		
-		Log.i("yoyo", "User " + displayName + " (ID: " + id + ") logged in successfully.");
+		if (task.isComplete()) 
+		{
+			onPlayerDetailsTaskComplete(task);
+		}
+		else 
+		{
+			// Wait for the async callback.
+			task.addOnCompleteListener(new OnCompleteListener<Player>() 
+			{
+				@Override
+				public void onComplete(Task<Player> playerDetailsTask) 
+				{
+					onPlayerDetailsTaskComplete(playerDetailsTask);
+				}
+			});
+		}
+	}
 	
+	private void onPlayerDetailsTaskComplete(Task<Player> task)
+	{
+		String displayName = "Anonymous";
+		String id = "-1";
+		
+		if(task.isSuccessful())
+		{
+			Player mPlayer = task.getResult();
+			String tempName = mPlayer.getDisplayName();
+			String tempId = mPlayer.getPlayerId();
+			
+			if (tempName != null) { displayName = tempName; }
+			if (tempId != null) { id = tempId; }
+		}
+
+		// Send all this info back to the runner
+		Log.i("yoyo", "GOOGLE PLAY: User " + displayName + " (ID: " + id + ") logged-in successfully.");
+				
 		int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
 		RunnerJNILib.DsMapAddString( dsMapIndex, "type", "login_success" );
 		RunnerJNILib.DsMapAddDouble( dsMapIndex, "id", GooglePlayServices_Our_Info);
 		RunnerJNILib.DsMapAddString( dsMapIndex, "name", displayName );
 		RunnerJNILib.DsMapAddString( dsMapIndex, "playerid", id );
-		
-		// Send event
 		RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
-		
-		
-		//RunnerJNILib.OnLoginSuccess(displayName, id, "", "", "", "", "");
 	}
+	
 	
 	private void onLoginFailed()
 	{
@@ -470,7 +470,6 @@ public class GooglePlayServicesExtension extends RunnerSocial
 		
 		// Send event
 		RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
-		
 	}
 	
 	// ==================================================
@@ -948,6 +947,7 @@ public class GooglePlayServicesExtension extends RunnerSocial
 	// ==================================================
 	// ACHIEVEMENT - UNLOCK
 	// ==================================================
+
     public void onPostAchievement(final String id, final java.lang.Float percentdone)
     {
 		if(percentdone <= 0)

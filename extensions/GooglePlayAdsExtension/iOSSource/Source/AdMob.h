@@ -11,10 +11,11 @@ extern "C" {
 #import "GoogleMobileAds/GoogleMobileAds.h"
 #import <PersonalizedAdConsent/PersonalizedAdConsent.h>
 
-@interface GoogleMobileAdsExt:NSObject<GADInterstitialDelegate,GADBannerViewDelegate,GADRewardBasedVideoAdDelegate>
+@interface GoogleMobileAdsExt:NSObject<GADBannerViewDelegate,GADFullScreenContentDelegate>
 {
 	GADBannerView *bannerView;
-	GADInterstitial *interstitial;
+	GADInterstitialAd *interstitial;
+	GADRewardedAd *rewardedAd;
 	
 	bool consentPreferAdFree;
 }

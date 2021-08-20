@@ -23,6 +23,8 @@ function game_over()
 	{
 		event_user(2);
 	}
+	
+	stop_interaction();
 
 	var body = instance_create_layer(x, y,"Instances", o_player_body);
 	var body1 = instance_create_layer(x, y,"Instances", o_player_body1);
@@ -44,4 +46,6 @@ function game_over()
 	}
 	
 	show_debug_message("Game is Overed");
+	
+	GoogleMobileAds_ShowInterstitial();
 }

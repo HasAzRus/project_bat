@@ -1,10 +1,9 @@
 {
-  "copyToTargets": 562949953421324,
   "optionsFile": "options.json",
   "options": [],
   "exportToGame": true,
   "supportedTargets": 562949953421324,
-  "extensionVersion": "3.2.0",
+  "extensionVersion": "3.3.4",
   "packageId": "com.yoyogames.googleplayservicesextension",
   "productId": "",
   "author": "",
@@ -17,7 +16,7 @@
   "androidProps": true,
   "installdir": "",
   "files": [
-    {"copyToTargets":562949953421324,"filename":"GoogleMobileAds.ext","origname":"extensions\\admob.ext","init":"","final":"","kind":4,"uncompress":false,"functions":[
+    {"filename":"GoogleMobileAds.ext","origname":"extensions\\admob.ext","init":"","final":"","kind":4,"uncompress":false,"functions":[
         {"externalName":"GoogleMobileAds_Init","kind":11,"help":"GoogleMobileAds_Init( interstitialId, applicationId )","hidden":false,"returnType":2,"argCount":2,"args":[
             1,
             1,
@@ -59,6 +58,7 @@
             2,
             2,
             2,
+            2,
           ],"resourceVersion":"1.0","name":"GoogleMobileAds_ConsentUpdate","tags":[],"resourceType":"GMExtensionFunction",},
         {"externalName":"GoogleMobileAds_ConsentFormShow","kind":11,"help":"GoogleMobileAds_ConsentFormShow(privacyPolicyURL, personalisedAds, noPersonalisedAds, adFree)","hidden":false,"returnType":2,"argCount":4,"args":[
             1,
@@ -89,7 +89,8 @@
         {"value":"5","hidden":false,"resourceVersion":"1.0","name":"GoogleMobileAds_Skyscraper","tags":[],"resourceType":"GMExtensionConstant",},
         {"value":"9817","hidden":false,"resourceVersion":"1.0","name":"GoogleMobileAds_ASyncEvent","tags":[],"resourceType":"GMExtensionConstant",},
         {"value":"6","hidden":false,"resourceVersion":"1.0","name":"GoogleMobileAds_Smart_Banner","tags":[],"resourceType":"GMExtensionConstant",},
-      ],"ProxyFiles":[],"order":[
+        {"value":"7","hidden":false,"resourceVersion":"1.0","name":"GoogleMobileAds_Adaptive_Banner","tags":[],"resourceType":"GMExtensionConstant",},
+      ],"ProxyFiles":[],"copyToTargets":562949953421324,"order":[
         {"name":"GoogleMobileAds_Init","path":"extensions/GooglePlayAdsExtension/GooglePlayAdsExtension.yy",},
         {"name":"GoogleMobileAds_ShowInterstitial","path":"extensions/GooglePlayAdsExtension/GooglePlayAdsExtension.yy",},
         {"name":"GoogleMobileAds_LoadInterstitial","path":"extensions/GooglePlayAdsExtension/GooglePlayAdsExtension.yy",},
@@ -127,27 +128,22 @@
   "macsourcedir": "",
   "maccompilerflags": "",
   "tvosmaccompilerflags": "",
-  "maclinkerflags": "",
+  "maclinkerflags": "\"$(inherited)\"",
   "tvosmaclinkerflags": "",
-  "iosplistinject": "<key>NSAppTransportSecurity</key>\r\n<dict>\r\n    <key>NSAllowsArbitraryLoads</key>\r\n    <true/>\r\n    <key>NSAllowsArbitraryLoadsForMedia</key>\r\n    <true/>\r\n    <key>NSAllowsArbitraryLoadsInWebContent</key>\r\n    <true/>\r\n</dict>\r\n <key>GADApplicationIdentifier</key>\r\n    <string>ca-app-pub-3940256099942544~1458002511</string>",
+  "iosplistinject": "<key>NSAppTransportSecurity</key>\r\n<dict>\r\n    <key>NSAllowsArbitraryLoads</key>\r\n    <true/>\r\n    <key>NSAllowsArbitraryLoadsForMedia</key>\r\n    <true/>\r\n    <key>NSAllowsArbitraryLoadsInWebContent</key>\r\n    <true/>\r\n</dict>\r\n <key>GADApplicationIdentifier</key>\r\n    <string>ca-app-pub-3940256099942544~1458002511</string>\r\n<key>SKAdNetworkItems</key>\r\n  <array>\r\n    <dict>\r\n      <key>SKAdNetworkIdentifier</key>\r\n      <string>cstr6suwn9.skadnetwork</string>\r\n    </dict>\r\n  </array>",
   "tvosplistinject": "",
   "androidinject": "<activity android:name=\"com.google.android.gms.ads.AdActivity\" android:configChanges=\"keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize\" />\r\n <meta-data\r\n            android:name=\"com.google.android.gms.ads.APPLICATION_ID\"\r\n            android:value=\"ca-app-pub-3940256099942544~3347511713\"/>",
   "androidmanifestinject": "",
   "androidactivityinject": "",
-  "gradleinject": "implementation  'com.google.android.gms:play-services-ads:17.2.1'\r\nimplementation  'com.google.android.ads.consent:consent-library:1.0.3'",
+  "gradleinject": "implementation  'com.google.android.gms:play-services-ads:20.0.0'\r\nimplementation  'com.google.android.ads.consent:consent-library:1.0.8'",
   "iosSystemFrameworkEntries": [],
   "tvosSystemFrameworkEntries": [],
-  "iosThirdPartyFrameworkEntries": [
-    {"weakReference":false,"resourceVersion":"1.0","name":"PersonalizedAdConsent.framework","tags":[],"resourceType":"GMExtensionFrameworkEntry",},
-    {"weakReference":false,"resourceVersion":"1.0","name":"GoogleMobileAds.framework","tags":[],"resourceType":"GMExtensionFrameworkEntry",},
-    {"weakReference":false,"resourceVersion":"1.0","name":"nanopb.framework","tags":[],"resourceType":"GMExtensionFrameworkEntry",},
-    {"weakReference":false,"resourceVersion":"1.0","name":"GoogleUtilities.framework","tags":[],"resourceType":"GMExtensionFrameworkEntry",},
-    {"weakReference":false,"resourceVersion":"1.0","name":"GoogleAppMeasurement.framework","tags":[],"resourceType":"GMExtensionFrameworkEntry",},
-  ],
+  "iosThirdPartyFrameworkEntries": [],
   "tvosThirdPartyFrameworkEntries": [],
   "IncludedResources": [],
   "androidPermissions": [],
-  "iosCocoaPods": "",
+  "copyToTargets": 562949953421324,
+  "iosCocoaPods": "pod 'Google-Mobile-Ads-SDK', '~> 8.1'\r\npod 'PersonalizedAdConsent', '~> 1.0'",
   "tvosCocoaPods": "",
   "iosCocoaPodDependencies": "",
   "tvosCocoaPodDependencies": "",

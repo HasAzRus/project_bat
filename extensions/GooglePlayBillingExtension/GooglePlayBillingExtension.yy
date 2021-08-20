@@ -1,10 +1,9 @@
 {
-  "copyToTargets": 8,
   "optionsFile": "options.json",
   "options": [],
   "exportToGame": true,
   "supportedTargets": 8,
-  "extensionVersion": "3.2.0",
+  "extensionVersion": "3.3.4",
   "packageId": "com.yoyogames.googleplayservicesiap",
   "productId": "",
   "author": "",
@@ -17,7 +16,7 @@
   "androidProps": true,
   "installdir": "",
   "files": [
-    {"copyToTargets":8,"filename":"GooglePlayBillingExtension.ext","origname":"extensions\\GooglePlayBillingExtension.ext","init":"GPBilling_Init","final":"","kind":4,"uncompress":false,"functions":[
+    {"filename":"GooglePlayBillingExtension.ext","origname":"extensions\\GooglePlayBillingExtension.ext","init":"GPBilling_Init","final":"","kind":4,"uncompress":false,"functions":[
         {"externalName":"GPBilling_Init","kind":4,"help":"GPBilling_Init()","hidden":false,"returnType":2,"argCount":0,"args":[],"resourceVersion":"1.0","name":"GPBilling_Init","tags":[],"resourceType":"GMExtensionFunction",},
         {"externalName":"GPBilling_QueryProducts","kind":4,"help":"GPBilling_QueryProducts()","hidden":false,"returnType":2,"argCount":0,"args":[],"resourceVersion":"1.0","name":"GPBilling_QueryProducts","tags":[],"resourceType":"GMExtensionFunction",},
         {"externalName":"GPBilling_AddProduct","kind":4,"help":"GPBilling_AddProduct(product_id)","hidden":false,"returnType":2,"argCount":0,"args":[
@@ -128,7 +127,7 @@
         {"value":"1","hidden":false,"resourceVersion":"1.0","name":"gpb_error_not_initialised","tags":[],"resourceType":"GMExtensionConstant",},
         {"value":"2","hidden":false,"resourceVersion":"1.0","name":"gpb_error_no_skus","tags":[],"resourceType":"GMExtensionConstant",},
         {"value":"3","hidden":false,"resourceVersion":"1.0","name":"gpb_error_selected_sku_list_empty","tags":[],"resourceType":"GMExtensionConstant",},
-      ],"ProxyFiles":[],"order":[
+      ],"ProxyFiles":[],"copyToTargets":8,"order":[
         {"name":"GPBilling_Init","path":"extensions/GooglePlayBillingExtension/GooglePlayBillingExtension.yy",},
         {"name":"GPBilling_ConnectToStore","path":"extensions/GooglePlayBillingExtension/GooglePlayBillingExtension.yy",},
         {"name":"GPBilling_IsStoreConnected","path":"extensions/GooglePlayBillingExtension/GooglePlayBillingExtension.yy",},
@@ -191,6 +190,7 @@
   "androidPermissions": [
     "com.android.vending.BILLING",
   ],
+  "copyToTargets": 8,
   "iosCocoaPods": "",
   "tvosCocoaPods": "",
   "iosCocoaPodDependencies": "",
