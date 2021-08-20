@@ -1,5 +1,6 @@
 /// @description Game Mode Initializing
 global.game_mode = self;
+global.player_death_count = 0;
 
 is_pause = false;
 

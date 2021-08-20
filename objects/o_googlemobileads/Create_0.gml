@@ -18,4 +18,4 @@ var deviceId = "00C11F07D8222A804FBA591F8766E282";
 
 GoogleMobileAds_UseTestAds(global.useTestAds, deviceId);
 
-alarm[0] = room_speed;
+GoogleMobileAds_LoadInterstitial();

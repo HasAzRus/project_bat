@@ -1,1 +1,0 @@
-GoogleMobileAds_LoadInterstitial();

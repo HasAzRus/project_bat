@@ -47,5 +47,16 @@ function game_over()
 	
 	show_debug_message("Game is Overed");
 	
-	GoogleMobileAds_ShowInterstitial();
+	global.player_death_count += 1;
+	
+	if(global.player_death_count == 5)
+	{
+		GoogleMobileAds_ShowInterstitial();
+		global.interLoading = true;
+		
+		GoogleMobileAds_LoadInterstitial();
+		
+		global.player_death_count = 0;
+	}
+
 }
