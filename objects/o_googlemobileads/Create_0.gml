@@ -9,7 +9,7 @@ global.ads_privacy_url = "https://www.yoyogames.com/legal/privacy";
 
 GoogleMobileAds_ConsentUpdate(global.ads_consent_id,global.ads_privacy_url,true,true,false,false); //False as the last parameter means that we won't display the dialog automatically
 
-global.useTestAds = true;
+global.useTestAds = false;
 global.bottomRight = false;
 global.interLoading = false;
 global.coins=0;

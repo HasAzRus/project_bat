@@ -1,0 +1,1 @@
+dir = point_direction(selected_x, selected_y, event_data[? "posX"], event_data[? "posY"]);
