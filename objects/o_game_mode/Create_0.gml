@@ -11,3 +11,5 @@ game_conditions = -1;
 max_timer_seconds = 0;
 
 last_timer = 0;
+
+cheat_code = "";

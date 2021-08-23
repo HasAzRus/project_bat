@@ -74,7 +74,9 @@ draw_sprite_ext(spr_gem, 0, vcamera_width_half - 30, 40, 5, 5, 0, c_white, 1);
 draw_sprite_ext(spr_red_gem, 0, vcamera_width_half + 50, 40, 5, 5, 0, c_white, 1);
 
 draw_set_font(fnt_hint);
+
 draw_set_halign(fa_left);
+draw_set_valign(fa_center);
 
 draw_set_color(c_white);
 

@@ -18,6 +18,9 @@ function game_over()
 
 	var nodeath_condition = instance_find(o_nodeath_condition, 0);
 	set_condition_state(e_condition_state.failed, nodeath_condition);
+	
+	var time_condition = instance_find(o_time_condition, 0);
+	set_condition_state(e_condition_state.failed, time_condition);
 
 	with(global.game_mode)
 	{

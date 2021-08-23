@@ -41,6 +41,12 @@ function try_cheat(cheat_code)
 		
 		return true;
 	}
+	else if(cheat_code == "crtpbx")
+	{
+		instance_create_layer(player.x + player.image_xscale * 20, player.y, "Instances", choose(o_physics_box, o_physics_box2, o_physics_box3));
+		
+		return true;
+	}
 	
 	return false;
 }
