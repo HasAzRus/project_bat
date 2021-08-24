@@ -5,7 +5,7 @@
     "path": "folders/Shaders.yy",
   },
   "resourceVersion": "1.0",
-  "name": "shd_blacknwhite",
+  "name": "shd_postprocess",
   "tags": [],
   "resourceType": "GMShader",
 }
