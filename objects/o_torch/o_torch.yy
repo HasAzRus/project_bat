@@ -1,16 +1,13 @@
 {
   "spriteId": {
-    "name": "spr_trap_spawner",
-    "path": "sprites/spr_trap_spawner/spr_trap_spawner.yy",
+    "name": "spr_torch",
+    "path": "sprites/spr_torch/spr_torch.yy",
   },
   "solid": false,
-  "visible": false,
+  "visible": true,
   "spriteMaskId": null,
   "persistent": false,
-  "parentObjectId": {
-    "name": "o_receiver",
-    "path": "objects/o_receiver/o_receiver.yy",
-  },
+  "parentObjectId": null,
   "physicsObject": false,
   "physicsSensor": false,
   "physicsShape": 1,
@@ -24,16 +21,17 @@
   "physicsKinematic": false,
   "physicsShapePoints": [],
   "eventList": [
-    {"isDnD":false,"eventNum":10,"eventType":7,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
+    {"isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
+    {"isDnD":false,"eventNum":0,"eventType":2,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
   ],
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Traps",
-    "path": "folders/Objects/For Level Designer/Traps.yy",
+    "name": "For Level Designer",
+    "path": "folders/Objects/For Level Designer.yy",
   },
   "resourceVersion": "1.0",
-  "name": "o_trap_stone_spawner",
+  "name": "o_torch",
   "tags": [],
   "resourceType": "GMObject",
 }

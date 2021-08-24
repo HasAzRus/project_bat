@@ -6,4 +6,4 @@ draw_set_valign(fa_center);
 draw_set_alpha(1);
 draw_set_color(c_white);
 
-draw_text_transformed(x, y, author, 0.15, 0.15, 0);
+draw_text_transformed(x, y, author, 0.2, 0.2, 0);
