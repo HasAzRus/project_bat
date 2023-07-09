@@ -18,3 +18,14 @@ with(global.ui)
 {
 	event_user(0);
 }
+
+physics_pause_enable(is_pause);
+
+if(is_pause)
+{
+	instance_deactivate_layer("Instances");
+}
+else
+{
+	instance_activate_layer("Instances");
+}

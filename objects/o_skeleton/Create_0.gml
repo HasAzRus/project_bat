@@ -16,7 +16,8 @@ enum e_skeleton_state
 {
 	sleep,
 	wait_to_attack,
-	attack
+	attack,
+	dead
 }
 
 state = e_skeleton_state.sleep;

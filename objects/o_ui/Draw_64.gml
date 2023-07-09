@@ -4,7 +4,14 @@ var is_pause = global.game_mode.is_pause;
 var view_width = view_wport[0];
 var view_height = view_hport[0];
 
+if(os_type == os_android)
+{
+	view_width = display_get_width();
+	view_height = display_get_height();
+}
+
 var vcamera_width_half = view_width / 2;
+var vcamera_height_half = view_height / 2;
 
 var vcamera_width_half_left_center = vcamera_width_half / 2;
 var vcamera_width_half_right_center = vcamera_width_half + vcamera_width_half / 2;
@@ -67,7 +74,9 @@ draw_sprite_ext(spr_gem, 0, vcamera_width_half - 30, 40, 5, 5, 0, c_white, 1);
 draw_sprite_ext(spr_red_gem, 0, vcamera_width_half + 50, 40, 5, 5, 0, c_white, 1);
 
 draw_set_font(fnt_hint);
+
 draw_set_halign(fa_left);
+draw_set_valign(fa_center);
 
 draw_set_color(c_white);
 
@@ -84,6 +93,26 @@ if(game.alarm[0] != -1)
 	//show_debug_message("normalized time" + string(normalized_time));
 	
 	draw_text_transformed_color(vcamera_width_half, 80, game.alarm[0] / 60, 0.7, 0.7, 0, time_text_color, time_text_color, time_text_color, time_text_color, 1);
+}
+
+if(show_dead_message)
+{
+	draw_set_font(fnt_hint);
+	
+	draw_set_halign(fa_middle);
+	draw_set_valign(fa_center);
+	
+	draw_text_transformed_color(vcamera_width_half, vcamera_height_half - 60, "dead", 1, 1, 0, c_white, c_white, c_white, c_white, 1);
+}
+
+if(show_win_message)
+{
+	draw_set_font(fnt_hint);
+	
+	draw_set_halign(fa_middle);
+	draw_set_valign(fa_center);
+	
+	draw_text_transformed_color(vcamera_width_half + 45, vcamera_height_half - 60, "win", 1, 1, 0, c_white, c_white, c_white, c_white, 1);
 }
 
 //if(start_black_screen_is_active)

@@ -18,11 +18,16 @@ function game_over()
 
 	var nodeath_condition = instance_find(o_nodeath_condition, 0);
 	set_condition_state(e_condition_state.failed, nodeath_condition);
+	
+	var time_condition = instance_find(o_time_condition, 0);
+	set_condition_state(e_condition_state.failed, time_condition);
 
 	with(global.game_mode)
 	{
 		event_user(2);
 	}
+	
+	stop_interaction();
 
 	var body = instance_create_layer(x, y,"Instances", o_player_body);
 	var body1 = instance_create_layer(x, y,"Instances", o_player_body1);
@@ -44,4 +49,17 @@ function game_over()
 	}
 	
 	show_debug_message("Game is Overed");
+	
+	global.player_death_count += 1;
+	
+	if(global.player_death_count == 5)
+	{
+		GoogleMobileAds_ShowInterstitial();
+		global.interLoading = true;
+		
+		GoogleMobileAds_LoadInterstitial();
+		
+		global.player_death_count = 0;
+	}
+
 }

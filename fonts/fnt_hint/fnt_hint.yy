@@ -9,10 +9,10 @@
   "bold": false,
   "italic": false,
   "charset": 0,
-  "AntiAlias": 1,
+  "AntiAlias": 0,
   "first": 0,
   "last": 0,
-  "sampleText": "abcdef ABCDEF\n0123456789 .,<>\"'&!?\nthe quick brown fox jumps over the lazy dog\nTHE QUICK BROWN FOX JUMPS OVER THE LAZY DOG\nDefault character: ▯ (9647)",
+  "sampleText": "sdada",
   "includeTTF": false,
   "TTFName": "",
   "textureGroupId": {
@@ -117,7 +117,7 @@
     "125": {"x":222,"y":36,"w":16,"h":32,"character":125,"shift":32,"offset":4,},
     "126": {"x":192,"y":36,"w":28,"h":32,"character":126,"shift":32,"offset":0,},
     "127": {"x":286,"y":70,"w":20,"h":32,"character":127,"shift":32,"offset":4,},
-    "9647": {"x":108,"y":172,"w":8,"h":32,"character":9647,"shift":19,"offset":6,},
+    "9647": {"x":108,"y":172,"w":7,"h":32,"character":9647,"shift":19,"offset":6,},
   },
   "kerningPairs": [],
   "ranges": [

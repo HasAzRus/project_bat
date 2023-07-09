@@ -8,8 +8,8 @@
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": {
-    "name": "o_pickup",
-    "path": "objects/o_pickup/o_pickup.yy",
+    "name": "o_pickup_damage",
+    "path": "objects/o_pickup_damage/o_pickup_damage.yy",
   },
   "physicsObject": true,
   "physicsSensor": false,

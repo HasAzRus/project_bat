@@ -1,0 +1,1 @@
+author = localize(e_localized.author_professional2);

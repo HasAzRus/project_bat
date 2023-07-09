@@ -3,7 +3,7 @@
   "options": [],
   "exportToGame": true,
   "supportedTargets": 8,
-  "extensionVersion": "3.2.0",
+  "extensionVersion": "3.3.4",
   "packageId": "com.yoyogames.googleplaylicensingextension",
   "productId": "6C049D182ECD002FCA87540902AF4A74",
   "author": "",

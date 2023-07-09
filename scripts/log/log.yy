@@ -1,5 +1,5 @@
 {
-  "isDnD": false,
+  "isDnD": true,
   "isCompatibility": false,
   "parent": {
     "name": "Scripts",

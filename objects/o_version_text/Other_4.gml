@@ -1,0 +1,1 @@
+version = localize(e_localized.version) + " " + string(global.version);

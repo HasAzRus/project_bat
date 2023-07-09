@@ -10,7 +10,7 @@ if(target != noone)
 			}
 		}
 		
-		if(can_attack && distance_to_object(target) < distance_to_player)
+		if(can_attack && distance_to_object(target) < distance_to_player && !target.died)
 		{
 			state = e_skeleton_state.wait_to_attack;
 		}
@@ -45,4 +45,14 @@ if(target != noone)
 else
 {
 	target = global.local_player;
+}
+
+if(place_meeting(x, y - 10, o_pickup_damage))
+{
+	state = e_skeleton_state.dead;
+	
+	phy_fixed_rotation = false;
+	sprite_index = spr_skeleton_dead;
+	
+	used = true;
 }

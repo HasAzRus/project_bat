@@ -9,6 +9,16 @@ with(o_light)
 	draw_light(sprite_index, x - other.camera_x, y - other.camera_y, image_xscale, image_yscale, color, light_intensity, saturation);
 }
 
+with(o_lightstick)
+{
+	draw_light(spr_ambient_light, x - other.camera_x, y - other.camera_y, random_range(1, 1.2), random_range(1, 1.2), c_blue, 1, 1);
+}
+
+with(o_torch)
+{
+	draw_light(spr_flare, x - other.camera_x, y - other.camera_y, random_range(1.4, 2), random_range(1.4, 2), c_orange, random_range(0.6, 1), random_range(0.1, 1));
+}
+
 gpu_set_blendmode(bm_normal);
 
 surface_reset_target();

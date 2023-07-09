@@ -57,7 +57,7 @@ else
 	
 	if(stamina < 100)
 	{
-		stamina += 0.2;
+		stamina += 0.4;
 		
 		if(stamina_state != e_stamina_state.none)
 		{
@@ -86,14 +86,7 @@ else
 	
 	if(last_height > 15)
 	{
-		repeat(5)
-		{
-			var ddir = irandom(360);
-			var dx = lengthdir_x(2, ddir);
-			var dy = lengthdir_y(2, ddir);
-			
-			dust = instance_create_layer(x + dx, y + 5 + dy, "Instances", o_dust);
-		}
+		create_dust(5);
 		
 		camera_shake(1, 10);
 	}
@@ -112,28 +105,5 @@ if(place_meeting(x, y + 5, o_invisible_block))
 		
 		var noground_condition = instance_nearest(x, y, o_noground_condition);
 		set_condition_state(e_condition_state.failed, noground_condition);
-	}
-}
-
-if(global.game_mode.is_pause)
-{
-	if(keyboard_check_pressed(vk_anykey))
-	{
-		if(string_length(keyboard_string) < 10)
-		{
-			show_debug_message(keyboard_string);
-			
-			if(try_cheat(keyboard_string))
-			{
-				show_message("cheat enabled");
-			};
-		}
-	}
-}
-else
-{
-	if(keyboard_string != "")
-	{
-		keyboard_string = "";
 	}
 }
